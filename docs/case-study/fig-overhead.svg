@@ -1,9 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" font-family="Helvetica,Arial,sans-serif" font-size="11.5">
-<rect width="100%" height="100%" fill="white"/>
-<text x="10" y="20" font-weight="bold" fill="#222">Context carried by one fresh Claude Code session before any work (tokens)</text>
-<text x="242" y="57.0" text-anchor="end" fill="#333">Full setup</text><rect x="250" y="38" width="427.4" height="30" fill="#163f35"/><text x="683.4" y="57.0" fill="#333">65,600</text>
-<text x="242" y="97.0" text-anchor="end" fill="#333">No MCP servers</text><rect x="250" y="78" width="275.8" height="30" fill="#2f7a5f"/><text x="531.8" y="97.0" fill="#333">42,326</text>
-<text x="242" y="137.0" text-anchor="end" fill="#333">Also no skills</text><rect x="250" y="118" width="257.9" height="30" fill="#2f7a5f"/><text x="513.9" y="137.0" fill="#333">39,584</text>
-<text x="242" y="177.0" text-anchor="end" fill="#333">Also no user plugins/settings (bare)</text><rect x="250" y="158" width="222.0" height="30" fill="#2f7a5f"/><text x="478.0" y="177.0" fill="#333">34,068</text>
-<text x="242" y="217.0" text-anchor="end" fill="#333">Bare, no tools</text><rect x="250" y="198" width="18.7" height="30" fill="#8aa79b"/><text x="274.7" y="217.0" fill="#333">2,864</text>
-<text x="10" y="240" fill="#555" font-size="10">Claude Code 2.1.286, Opus 5.5, one-turn claude -p sessions; each row switches one more component off.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 292" font-family="Georgia, Palatino, 'Palatino Linotype', 'Liberation Serif', serif">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<title>Context carried by one fresh session before any work</title>
+<text x="28" y="26" text-anchor="start" fill="#1c1916" font-size="14">Context carried by one fresh Claude Code session before any work</text>
+<text x="28" y="46" text-anchor="start" fill="#6f675e" font-size="11.5">Tokens. Each row switches one more component off.</text>
+<text x="292" y="58" text-anchor="middle" fill="#6f675e" font-size="10">0</text>
+<line x1="292" y1="66" x2="292" y2="224" stroke="#e4ddd2" stroke-width="1"/>
+<text x="389.14" y="58" text-anchor="middle" fill="#6f675e" font-size="10">20,000</text>
+<line x1="389.14" y1="66" x2="389.14" y2="224" stroke="#f3efe8" stroke-width="1"/>
+<text x="486.29" y="58" text-anchor="middle" fill="#6f675e" font-size="10">40,000</text>
+<line x1="486.29" y1="66" x2="486.29" y2="224" stroke="#f3efe8" stroke-width="1"/>
+<text x="583.43" y="58" text-anchor="middle" fill="#6f675e" font-size="10">60,000</text>
+<line x1="583.43" y1="66" x2="583.43" y2="224" stroke="#f3efe8" stroke-width="1"/>
+<text x="278" y="76" text-anchor="end" fill="#1c1916" font-size="12.5">Full setup</text>
+<line x1="292" y1="72" x2="610.63" y2="72" stroke="#163f35" stroke-width="1.35"/>
+<circle cx="610.63" cy="72" r="4" fill="#163f35"/>
+<text x="620.63" y="76" text-anchor="start" fill="#1c1916" font-size="12">65,600</text>
+<text x="278" y="112" text-anchor="end" fill="#1c1916" font-size="12.5">No MCP servers</text>
+<line x1="292" y1="108" x2="497.58" y2="108" stroke="#163f35" stroke-width="1.35"/>
+<circle cx="497.58" cy="108" r="4" fill="#163f35"/>
+<text x="507.58" y="112" text-anchor="start" fill="#1c1916" font-size="12">42,326</text>
+<text x="278" y="148" text-anchor="end" fill="#1c1916" font-size="12.5">Also no skills</text>
+<line x1="292" y1="144" x2="484.27" y2="144" stroke="#163f35" stroke-width="1.35"/>
+<circle cx="484.27" cy="144" r="4" fill="#163f35"/>
+<text x="494.27" y="148" text-anchor="start" fill="#1c1916" font-size="12">39,584</text>
+<text x="278" y="184" text-anchor="end" fill="#1c1916" font-size="12.5">Also no user plugins/settings (bare)</text>
+<line x1="292" y1="180" x2="457.47" y2="180" stroke="#163f35" stroke-width="1.35"/>
+<circle cx="457.47" cy="180" r="4" fill="#163f35"/>
+<text x="467.47" y="184" text-anchor="start" fill="#1c1916" font-size="12">34,068</text>
+<text x="278" y="220" text-anchor="end" fill="#1c1916" font-size="12.5">Bare, no tools</text>
+<line x1="292" y1="216" x2="305.91" y2="216" stroke="#163f35" stroke-width="1.35"/>
+<circle cx="305.91" cy="216" r="4" fill="#163f35"/>
+<text x="315.91" y="220" text-anchor="start" fill="#1c1916" font-size="12">2,864</text>
+<text x="28" y="276" text-anchor="start" fill="#6f675e" font-size="11">Claude Code 2.1.286, Opus 5.5, one-turn claude -p sessions.</text>
+</svg>

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Figures redrawn. Incidents by class are a dot strip, detections and session overhead are lollipops, and the timeline columns are narrow. Counts unchanged.
 - Plugin listing fields for the Claude directory: `displayName`, and a README in the plugin folder that states the skill sends nothing and fetches nothing.
 - Case study v1.10: the manuscript names skill release 1.2.0, and says rule 8 was not a control during the study window.
 - Case study v1.9: the commit counts now match `98e7fc4`. The history has 315 commits from 17 September, not a root on 22 September and not 151 commits. The 55 Zenodo DOIs are the distinct identifiers in `papers/papers.json`. `docs/EVIDENCE.md` records the skill 1.1.0 sentences that were not controls during the window.

@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Draw Figures 1 and 2 from incidents.csv. Control dates are the ones stated in the manuscript, not estimated."""
+"""Draw Figures 1–3.
+
+Figures 1 and 2 are counted from incidents.csv.
+Control dates are the ones stated in the manuscript, not estimated.
+Figure 3 is not counted from the CSV. It redraws the five session totals
+already printed on that figure.
+"""
 import csv
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -15,12 +21,50 @@ CLASS_ORDER = [
     ("P", "Process and tooling"),
 ]
 REACH_ORDER = ["public", "uncertain", "caught/internal"]
-REACH_COLOR = {"public": "#c0503a", "uncertain": "#e3b341", "caught/internal": "#2f7a5f"}
-SCALE = 8.5  # px per incident in Figure 1A
+REACH_COLOR = {
+    "public": "#8f3b2e",
+    "uncertain": "#9a7430",
+    "caught/internal": "#1c4c3e",
+}
+INK = "#1c1916"
+MUTED = "#6f675e"
+RULE = "#e4ddd2"
+HAIR = "#f3efe8"
+PAPER = "#ffffff"
+SERIF = "Georgia, Palatino, 'Palatino Linotype', 'Liberation Serif', serif"
+
+# Session totals already printed on Figure 3. Not remeasured here.
+OVERHEAD = [
+    ("Full setup", 65600),
+    ("No MCP servers", 42326),
+    ("Also no skills", 39584),
+    ("Also no user plugins/settings (bare)", 34068),
+    ("Bare, no tools", 2864),
+]
+
+
+def fmt(v):
+    v = round(float(v), 2)
+    if abs(v - round(v)) < 1e-6:
+        return str(int(round(v)))
+    text = f"{v:.2f}".rstrip("0").rstrip(".")
+    return text
+
+
+def comma(n):
+    return f"{n:,}"
+
+
+def text(x, y, body, size=12, fill=INK, anchor="start", weight="normal"):
+    extra = "" if weight == "normal" else f' font-weight="{weight}"'
+    return (
+        f'<text x="{fmt(x)}" y="{fmt(y)}" text-anchor="{anchor}" fill="{fill}" '
+        f'font-size="{size}"{extra}>{body}</text>'
+    )
 
 
 def detections():
-    # Order and labels match Table 2. Dark bars are the two in-project AI reviews.
+    # Order and labels match Table 2. Filled marks are the two in-project AI reviews.
     order = [
         ("REF", "AI referee reading", True),
         ("SELF", "Working session itself", False),
@@ -46,45 +90,101 @@ def detections():
 
 
 def figure_classes():
+    bars = detections()
+    width, height = 700, 668
+    label_x = 236
+    dot_x = 252
+    radius = 3.4
+    pitch = 11
+    row_y0 = 78
+    row_h = 34
     lines = [
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 340" font-family="Helvetica,Arial,sans-serif" font-size="11">',
-        '<rect width="100%" height="100%" fill="white"/>',
-        '<text x="10" y="18" font-weight="bold" fill="#222">A. Incidents by class and reach</text>',
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+        f'font-family="{SERIF}">',
+        f'<rect width="100%" height="100%" fill="{PAPER}"/>',
+        f'<title>Incidents by class and reach, and detections by control</title>',
+        text(28, 32, "A", 15),
+        text(48, 32, "Incidents by class and reach", 15),
+        text(28, 50, "Each dot is one incident", 11, MUTED),
     ]
-    y = 44
-    for code, label in CLASS_ORDER:
+    totals = []
+    for i, (code, label) in enumerate(CLASS_ORDER):
         subset = [r for r in ROWS if r["class"] == code]
-        x = 170
-        lines.append(f'<text x="162" y="{y + 19}" text-anchor="end" fill="#333">{label}</text>')
+        cy = row_y0 + i * row_h
+        lines.append(text(label_x, cy + 4, label, 12.5, anchor="end"))
+        x = dot_x
         for reach in REACH_ORDER:
             n = sum(1 for r in subset if r["reach"] == reach)
             if not n:
                 continue
-            w = n * SCALE
-            lines.append(f'<rect x="{x}" y="{y}" width="{w}" height="30" fill="{REACH_COLOR[reach]}"/>')
-            if w >= 16:
+            color = REACH_COLOR[reach]
+            for k in range(n):
+                cx = x + radius + k * pitch
                 lines.append(
-                    f'<text x="{x + w / 2}" y="{y + 19}" text-anchor="middle" fill="white" font-size="10">{n}</text>'
+                    f'<circle cx="{fmt(cx)}" cy="{fmt(cy)}" r="{radius}" fill="{color}"/>'
                 )
-            x += w
-        lines.append(f'<text x="{x + 6}" y="{y + 19}" fill="#333">{len(subset)}</text>')
-        y += 42
-    lines.append('<rect x="20" y="276" width="10" height="10" fill="#c0503a"/><text x="34" y="285" fill="#333">Reached public</text>')
-    lines.append('<rect x="150" y="276" width="10" height="10" fill="#e3b341"/><text x="164" y="285" fill="#333">Uncertain</text>')
-    lines.append('<rect x="250" y="276" width="10" height="10" fill="#2f7a5f"/><text x="264" y="285" fill="#333">Caught / internal</text>')
-    lines.append('<text x="410" y="18" font-weight="bold" fill="#222">B. What caught them (detections)</text>')
-    bars = detections()
-    max_n = max(n for _, n, _ in bars)
-    y = 32
-    for label, n, dark in bars:
-        w = 180 * n / max_n
-        color = "#163f35" if dark else "#8aa79b"
-        lines.append(f'<text x="552" y="{y + 11}" text-anchor="end" fill="#333">{label}</text>')
-        lines.append(f'<rect x="560" y="{y}" width="{w:.1f}" height="14" fill="{color}"/>')
-        lines.append(f'<text x="{560 + w + 4:.1f}" y="{y + 11}" fill="#333">{n}</text>')
-        y += 20
+            end = x + radius + (n - 1) * pitch + radius
+            lines.append(text(end + 7, cy + 3.5, str(n), 10, MUTED))
+            x = end + 7 + (14 if n < 10 else 20) + 12
+        totals.append((cy, len(subset)))
+    total_x = 668
     lines.append(
-        '<text x="410" y="278" fill="#555" font-size="10">Dark: in-project AI review, 39 of 80 incidents (49%)</text>'
+        f'<line x1="{total_x - 28}" y1="60" x2="{total_x - 28}" y2="{row_y0 + 4 * row_h + 12}" '
+        f'stroke="{RULE}" stroke-width="1"/>'
+    )
+    for cy, n in totals:
+        lines.append(text(total_x, cy + 4, str(n), 13, anchor="end"))
+    legend_y = row_y0 + 5 * row_h + 6
+    legend = [
+        (28, "Reached public", REACH_COLOR["public"]),
+        (176, "Uncertain", REACH_COLOR["uncertain"]),
+        (300, "Caught / internal", REACH_COLOR["caught/internal"]),
+    ]
+    for x, name, color in legend:
+        lines.append(f'<circle cx="{x + 4}" cy="{fmt(legend_y - 3)}" r="3.4" fill="{color}"/>')
+        lines.append(text(x + 14, legend_y, name, 11.5, MUTED))
+
+    panel_b = legend_y + 46
+    lines.append(text(28, panel_b, "B", 15))
+    lines.append(text(48, panel_b, "What caught them", 15))
+    lines.append(text(28, panel_b + 18, "Detections. One incident can have more than one.", 11, MUTED))
+    axis_x = 268
+    axis_w = 360
+    scale = 30
+    top = panel_b + 46
+    plot_bottom = top + (len(bars) - 1) * 26
+    for tick in (0, 10, 20, 30):
+        x = axis_x + axis_w * tick / scale
+        lines.append(
+            f'<line x1="{fmt(x)}" y1="{fmt(top - 16)}" x2="{fmt(x)}" y2="{fmt(plot_bottom + 10)}" '
+            f'stroke="{HAIR if tick else RULE}" stroke-width="1"/>'
+        )
+        lines.append(text(x, top - 22, str(tick), 10, MUTED, anchor="middle"))
+    for i, (label, n, dark) in enumerate(bars):
+        cy = top + i * 26
+        x = axis_x + axis_w * n / scale
+        lines.append(text(axis_x - 12, cy + 4, label, 12.5, anchor="end"))
+        lines.append(
+            f'<line x1="{axis_x}" y1="{fmt(cy)}" x2="{fmt(x)}" y2="{fmt(cy)}" '
+            f'stroke="{"#163f35" if dark else "#cfc6ba"}" stroke-width="1.25"/>'
+        )
+        if dark:
+            lines.append(f'<circle cx="{fmt(x)}" cy="{fmt(cy)}" r="3.6" fill="#163f35"/>')
+        else:
+            lines.append(
+                f'<circle cx="{fmt(x)}" cy="{fmt(cy)}" r="3.4" fill="{PAPER}" '
+                f'stroke="#163f35" stroke-width="1.25"/>'
+            )
+        lines.append(text(x + 10, cy + 4, str(n), 12))
+    note_y = plot_bottom + 32
+    lines.append(
+        text(
+            28,
+            note_y,
+            "Filled marks: in-project AI review, 39 of 80 incidents (49%).",
+            11.5,
+            MUTED,
+        )
     )
     lines.append("</svg>")
     (ROOT / "fig-classes.svg").write_text("\n".join(lines) + "\n")
@@ -106,20 +206,51 @@ def figure_timeline():
         "2026-09-25": "quality bar",
         "2026-09-26": "adversarial",
     }
-    unit = 11.2
-    base = 300
-    left = 50
-    pitch = 46
+    width, height = 760, 430
+    unit = 6.4
+    col_w = 9
+    base = 328
+    left = 58
+    pitch = 44
     lines = [
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="Helvetica,Arial,sans-serif" font-size="11">',
-        '<rect width="100%" height="100%" fill="white"/>',
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+        f'font-family="{SERIF}">',
+        f'<rect width="100%" height="100%" fill="{PAPER}"/>',
+        "<title>Incidents by the date they were recorded</title>",
+        text(28, 24, "Incidents by the date they were recorded", 15),
     ]
-    for tick, label in ((0, "0"), (5, "5"), (10, "10"), (15, "15"), (20, "20")):
+    legend = [
+        (28, "Reached public", REACH_COLOR["public"]),
+        (168, "Uncertain", REACH_COLOR["uncertain"]),
+        (280, "Caught / internal", REACH_COLOR["caught/internal"]),
+    ]
+    for x, name, color in legend:
+        lines.append(f'<rect x="{x}" y="38" width="8" height="8" fill="{color}"/>')
+        lines.append(text(x + 12, 46, name, 11.5, MUTED))
+    key = ["gate", "quality bar", "adversarial"]
+    kx = 430
+    for name in key:
+        lines.append(
+            f'<line x1="{kx}" y1="42" x2="{kx + 14}" y2="42" stroke="#163f35" '
+            f'stroke-width="1" stroke-dasharray="1.5 2"/>'
+        )
+        lines.append(text(kx + 18, 46, name, 11, MUTED))
+        kx += 110
+    for tick in (0, 5, 10, 15, 20):
         y = base - tick * unit
-        lines.append(f'<line x1="46" x2="740" y1="{y}" y2="{y}" stroke="#e2e2e2"/>')
-        lines.append(f'<text x="40" y="{y + 4}" text-anchor="end" fill="#555">{label}</text>')
+        lines.append(
+            f'<line x1="48" y1="{fmt(y)}" x2="730" y2="{fmt(y)}" stroke="{HAIR}" stroke-width="1"/>'
+        )
+        lines.append(text(40, y + 3, str(tick), 10, MUTED, anchor="end"))
+    lines.append(f'<line x1="48" y1="{base}" x2="730" y2="{base}" stroke="{INK}" stroke-width="1"/>')
     for i, day in enumerate(days):
         x = left + i * pitch
+        if day in controls:
+            mark = x - 8
+            lines.append(
+                f'<line x1="{mark}" y1="62" x2="{mark}" y2="{base}" stroke="#163f35" '
+                f'stroke-width="1" stroke-dasharray="1.5 2.5"/>'
+            )
         y = base
         total = sum(by[day].values())
         for reach in REACH_ORDER:
@@ -128,28 +259,77 @@ def figure_timeline():
                 continue
             h = n * unit
             y -= h
-            lines.append(f'<rect x="{x}" y="{y}" width="38" height="{h}" fill="{REACH_COLOR[reach]}"/>')
-        if total:
-            lines.append(f'<text x="{x + 19}" y="{y - 4}" text-anchor="middle" fill="#333">{total}</text>')
-        lines.append(f'<text x="{x + 19}" y="316" text-anchor="middle" fill="#333">{day[-2:]}</text>')
-        if day in controls:
             lines.append(
-                f'<line x1="{x - 4}" x2="{x - 4}" y1="28" y2="{base}" stroke="#163f35" stroke-dasharray="3,3"/>'
+                f'<rect x="{fmt(x)}" y="{fmt(y)}" width="{col_w}" height="{fmt(h)}" '
+                f'fill="{REACH_COLOR[reach]}"/>'
             )
-            lines.append(f'<text x="{x - 1}" y="24" fill="#163f35" font-size="9">{controls[day]}</text>')
-    lines.append('<text x="250" y="332" text-anchor="middle" fill="#666">September</text>')
-    lines.append('<text x="640" y="332" text-anchor="middle" fill="#666">October</text>')
-    lines.append('<text x="380" y="350" text-anchor="middle" fill="#333">Date recorded, 2026</text>')
-    lines.append('<text transform="translate(14,180) rotate(-90)" text-anchor="middle" fill="#333">Incidents</text>')
-    lines.append('<rect x="46" y="6" width="11" height="11" fill="#c0503a"/><text x="62" y="15" fill="#333">Reached public</text>')
-    lines.append('<rect x="176" y="6" width="11" height="11" fill="#e3b341"/><text x="192" y="15" fill="#333">Uncertain</text>')
-    lines.append('<rect x="280" y="6" width="11" height="11" fill="#2f7a5f"/><text x="296" y="15" fill="#333">Caught / internal</text>')
-    lines.append('<line x1="430" x2="450" y1="11" y2="11" stroke="#163f35" stroke-dasharray="3,3"/><text x="456" y="15" fill="#333">control dated in the text</text>')
+        if total:
+            lines.append(text(x + col_w / 2, y - 6, str(total), 11, anchor="middle"))
+        lines.append(text(x + col_w / 2, base + 16, str(int(day[-2:])), 11, MUTED, anchor="middle"))
+    sep0 = left + col_w / 2
+    sep1 = left + 11 * pitch + col_w / 2
+    oct0 = left + 12 * pitch + col_w / 2
+    oct1 = left + 14 * pitch + col_w / 2
+    lines.append(f'<line x1="{fmt(sep0)}" y1="{base + 28}" x2="{fmt(sep1)}" y2="{base + 28}" stroke="{RULE}"/>')
+    lines.append(f'<line x1="{fmt(oct0)}" y1="{base + 28}" x2="{fmt(oct1)}" y2="{base + 28}" stroke="{RULE}"/>')
+    lines.append(text((sep0 + sep1) / 2, base + 44, "September", 12, MUTED, anchor="middle"))
+    lines.append(text((oct0 + oct1) / 2, base + 44, "October", 12, MUTED, anchor="middle"))
+    lines.append(text(380, base + 66, "Date recorded, 2026", 12, MUTED, anchor="middle"))
+    lines.append(
+        f'<text transform="translate(16,210) rotate(-90)" text-anchor="middle" fill="{MUTED}" '
+        f'font-size="12">Incidents</text>'
+    )
     lines.append("</svg>")
     (ROOT / "fig-timeline.svg").write_text("\n".join(lines) + "\n")
+
+
+def figure_overhead():
+    width, height = 720, 292
+    axis_x = 292
+    axis_w = 340
+    scale = 70000
+    top = 72
+    row_h = 36
+    lines = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+        f'font-family="{SERIF}">',
+        f'<rect width="100%" height="100%" fill="{PAPER}"/>',
+        "<title>Context carried by one fresh session before any work</title>",
+        text(28, 26, "Context carried by one fresh Claude Code session before any work", 14),
+        text(28, 46, "Tokens. Each row switches one more component off.", 11.5, MUTED),
+    ]
+    for tick in (0, 20000, 40000, 60000):
+        x = axis_x + axis_w * tick / scale
+        lines.append(text(x, top - 14, comma(tick), 10, MUTED, anchor="middle"))
+        lines.append(
+            f'<line x1="{fmt(x)}" y1="{top - 6}" x2="{fmt(x)}" y2="{fmt(top + 4 * row_h + 8)}" '
+            f'stroke="{HAIR if tick else RULE}" stroke-width="1"/>'
+        )
+    for i, (label, n) in enumerate(OVERHEAD):
+        cy = top + i * row_h
+        x = axis_x + axis_w * n / scale
+        lines.append(text(axis_x - 14, cy + 4, label, 12.5, anchor="end"))
+        lines.append(
+            f'<line x1="{axis_x}" y1="{fmt(cy)}" x2="{fmt(x)}" y2="{fmt(cy)}" '
+            f'stroke="#163f35" stroke-width="1.35"/>'
+        )
+        lines.append(f'<circle cx="{fmt(x)}" cy="{fmt(cy)}" r="4" fill="#163f35"/>')
+        lines.append(text(x + 10, cy + 4, comma(n), 12))
+    lines.append(
+        text(
+            28,
+            276,
+            "Claude Code 2.1.286, Opus 5.5, one-turn claude -p sessions.",
+            11,
+            MUTED,
+        )
+    )
+    lines.append("</svg>")
+    (ROOT / "fig-overhead.svg").write_text("\n".join(lines) + "\n")
 
 
 if __name__ == "__main__":
     figure_classes()
     figure_timeline()
-    print("wrote fig-classes.svg and fig-timeline.svg")
+    figure_overhead()
+    print("wrote fig-classes.svg, fig-timeline.svg and fig-overhead.svg")
