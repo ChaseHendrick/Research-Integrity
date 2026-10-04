@@ -4,7 +4,7 @@
 
 Chase Hendrick · Hendrick Research · ORCID [0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Version 1.3 · 4 October 2026 · Case study, not peer reviewed
+Version 1.4 · 4 October 2026 · Case study, not peer reviewed
 
 ---
 
@@ -278,7 +278,7 @@ After those dates, almost every recorded manuscript-content error was caught bef
 
 **The dominant failure is overreach, not invention.** Of the 80 incidents, few involve material invented from nothing. The search-summary artifacts (L3, L4) and the invented co-author trailers (P4) come closest. Most are claims stated more strongly than the evidence allowed. The failure is in calibration, so the remedy is to make evidence strength visible at every claim, not just to check facts.
 
-**Blocked access is a correctness problem.** A literature search that cannot reach the literature does not produce a weak result; it produces a misleading one, because it is read as negative. The single most damaging incident in this study (N1–N2) follows directly from a network policy. Two things would have prevented it: tooling that reported which sources were unreachable, and conclusions that stated their reach.
+**Blocked access is a correctness problem.** A literature search that cannot reach the literature does not produce a weak result; it produces a misleading one, because it is read as negative. The single most damaging incident in this study (N1–N2) follows directly from a network policy. Two things would have prevented it: tooling that reported which sources were unreachable, and conclusions that stated their reach. Unreachable sources need not be blocked hosts. In our session-overhead measurements, the first headless session after login carried 43,240 tokens of context, against about 65,600 for every later run of the same command. That matches the configuration with MCP connectors switched off to within about 900 tokens, so the run very likely started before its connectors had connected, and nothing in its output said so. A literature-search connector that silently fails to load produces the same "nothing found" as a search that found nothing ([anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400)).
 
 **These failures echo known patterns, in a new setting.** The misclassification of known results as novel (Class N) is the failure Beel et al. (2025) found in an autonomous system, here appearing in a human-directed project with a human in the loop. The verification harness that passed 13 of 16 mutations parallels the gap between coverage and mutation score in LLM-written software tests (Wang et al., 2025). The near absence of outright fabricated citations, compared with the rates Walters and Wilder (2023) measured, suggests the frontier has moved from inventing sources to misreading them.
 
