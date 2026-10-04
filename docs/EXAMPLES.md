@@ -82,3 +82,13 @@ In the real case, the result was in both of those papers.
 **After**
 
 > The quality check fails on items 6 (adversarial second reading) and 7 (reproducibility). The release waits until both are done and recorded. If the gate itself is wrong, that is a separate change, with its reason recorded, made before this release and not to unblock it.
+
+## A gate
+
+**Before**
+
+> The manuscript says 151 commits. I counted roughly that. Checklist item "numbers copied from the run" is ticked. Releasing.
+
+**After**
+
+> `scripts/gate.py` reads `incidents.csv` and exits 1 if the skill states a different count. Planted fault: the sentence "79 failures" against a file of 80 rows. Observed: fail, because the stated count is 79. The clean tree exits 0. The zip is built in that same run. The release waits until the downloaded archive matches that zip. Status of the count: `repository`. Not claimed: the gate does not check a proof.

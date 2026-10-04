@@ -18,9 +18,9 @@ AI research assistants rarely fail by inventing things from nothing. They fail b
 
 Each looks reasonable, and none announces itself.
 
-This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)).
+This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.10.
 
-It is plain instructions: no scripts, no network access, no API key.
+The skill you install is plain instructions: no scripts, no network access, no API key. This repository's own release is held to a stricter bar. [`scripts/gate.py`](scripts/gate.py) recomputes the incident count from [`incidents.csv`](docs/case-study/incidents.csv) and fails if the skill or this page states a different one. A planted wrong count and a planted version mismatch must each make it fail. It also builds the downloadable zip.
 
 ## Install
 
@@ -89,24 +89,25 @@ The same situation, in two columns. The right-hand column is what the skill is f
     <tr>
       <td>A release gate fails</td>
       <td>The gate is changed so the release passes.</td>
-      <td>The release waits. A change to the gate is recorded, with its reason.</td>
+      <td>The release waits. The gate is a program, and a planted fault must make it fail.</td>
     </tr>
   </tbody>
 </table>
 
 [See worked examples →](docs/EXAMPLES.md)
 
-## The seven rules
+## The rules
 
-1. **Label every claim with how it is known**, and with its status: `proved`, `computer-assisted`, `cited`, `numerical`, or `conjectured`.
+1. **Label every claim with how it is known**, and with its status: `proved`, `computer-assisted`, `cited`, `numerical`, or `conjectured`. Date a public error by the artifact that contains it.
 2. **Record what could not be searched.** A blocked source goes in the log, never into "no results".
-3. **Never infer novelty from a search**, or from a numerical check that succeeded.
+3. **Never infer novelty from a search**, or from a numerical check that succeeded. A contribution sentence says what it does not claim.
 4. **Every check must be able to fail** for the reason it tests. A number in a claim is copied from the run that produced it.
 5. **Review adversarially, then doubt the reviewer.** The drafting session never checks its own fixes.
 6. **Label review honestly.** An AI reading is not peer review.
 7. **Do not bend a gate to fit a release.**
+8. **The gate is a program.** It recomputes public counts from their files and fails on a planted fault.
 
-The full text, with a pre-release checklist and a table of phrases to avoid, is in [`SKILL.md`](plugins/research-integrity/skills/research-integrity/SKILL.md).
+The full text, with a pre-release checklist and a table of phrases to avoid, is in [`SKILL.md`](plugins/research-integrity/skills/research-integrity/SKILL.md). The goal is at the top of that file: beat a checklist, and hold this repository to the same rule.
 
 ## Where the rules come from
 
@@ -127,7 +128,7 @@ In-project AI review was the control that caught the most: separate sessions tol
 
 ![Figure 1 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
 
-- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.9. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what skill 1.1.0 added after the study window.
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.10. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what the skill added after the study window. The current skill release is 1.2.0.
 - **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
 - **[See the evidence for each rule](docs/EVIDENCE.md)**.
 
@@ -148,7 +149,7 @@ The skill is a single Markdown file of instructions. It runs no code, makes no n
 python3 scripts/validate.py
 ```
 
-This checks the marketplace file, the plugin manifest and the skill's frontmatter, and runs on every push. With Claude Code installed you can also run `claude plugin validate . && claude plugin validate ./plugins/research-integrity --strict`.
+This checks the marketplace file, the plugin manifest and the skill's frontmatter, recomputes the case-study counts, and runs the release gate. It runs on every push. With Claude Code installed you can also run `claude plugin validate . && claude plugin validate ./plugins/research-integrity --strict`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) to propose a rule, and [CHANGELOG.md](CHANGELOG.md) for versions.
 

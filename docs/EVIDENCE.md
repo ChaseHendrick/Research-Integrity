@@ -56,6 +56,12 @@ A verification figure of 6 × 10⁻²⁵ shipped in a release; it "came from a m
 
 **What changed.** Every archive is now downloaded and checked after release. "A new `RELEASES.md` heading is not evidence" ([`docs/PUBLISHING-PAPERS.md:176`](https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/docs/PUBLISHING-PAPERS.md#L176)).
 
+## 8. The gate is a program
+
+**What happened.** The quality bar in GENChase was a checklist. A paper was archived while two items were still open, and the checker was then changed so an archived paper reported them instead of failing (case-study P1). A quality item was ticked before the reading it certified existed (V12). In this repository, case study version 1.8 stated 151 commits and a history starting on 22 September. `git rev-list --count` at the cited commit `98e7fc4`, run on 4 October 2026, is 315, and the first commit is dated 17 September. No program failed that sentence.
+
+**What changed.** Rule 8. [`scripts/gate.py`](../scripts/gate.py) reads [`incidents.csv`](case-study/incidents.csv) and fails if the skill or the README states a different count. It fails if the plugin manifest, the citation file, the changelog heading, the skill's release line, and the case study disagree about the version. A planted count of 79, and a planted version mismatch, must each make it fail. The downloadable zip is built from `SKILL.md` in the same run. This rule was not a control during the study window.
+
 ## The full record
 
 The case study [*Eighty Failures: Error Modes and Controls in AI-Assisted Mathematical Research*](case-study/ai-research-failure-modes.md) ([PDF](case-study/ai-research-failure-modes.pdf)) documents all 80 incidents. The [incident dataset](case-study/incidents.csv) has them as a CSV. Each one has its class, date, commit, detecting control and whether it reached a public release.

@@ -8,22 +8,32 @@ description: >
   (proved, computer-assisted, cited, numerical, or conjectured). Searches record
   what did not load. Novelty is never inferred from a search or a check that
   passed. A cited theorem is applied only with its hypotheses checked. A public
-  number is copied from the run that produced it. A check must be able to fail
-  for the reason it tests. Reviews are adversarial and labelled as in-project.
-  A release gate is not relaxed to fit a release. Skip casual questions and code
-  that makes no scientific or factual claim.
+  number is copied from the run that produced it, and a committed program fails
+  if the prose disagrees. A check must be able to fail for the reason it tests.
+  Reviews are adversarial and labelled as in-project. A release gate is a
+  program, not a box the drafting session can tick, and it is not relaxed to
+  fit a release. Skip casual questions and code that makes no scientific or
+  factual claim.
 license: Apache-2.0
 ---
 
 # Research integrity
+
+Release: 1.2.0
+
+## Goal
+
+Beat a checklist. The seven-item bar this skill comes from could be ticked by the session that had failed it, and it was then edited so an archived paper no longer failed. The standard here is a committed program that recomputes every public count from the file that produced it, exits non-zero if the prose disagrees, and rejects a planted fault. This repository is held to that standard by `scripts/gate.py`. The text below is what the assistant follows. The program is what a release has to pass.
+
+Not claimed. The skill does not open sources the assistant cannot reach. An in-project review is not peer review. Nothing here measures whether the rules reduce errors. The gate checks sentences in this repository. It does not check a proof.
 
 These rules come from a documented record of 80 failures in two weeks of
 AI-assisted mathematical research (nine preprints). Most failures were not
 inventions. They were **claims that outran their evidence**: a search that could
 not reach the journals read as proof of novelty, a check that could not fail
 reported as passed, an abstract read as if it were the paper, a number taken from
-a mislabeled metric. Each looked reasonable and none announced itself. The rules
-below are the controls that caught them.
+a mislabeled metric. Each looked reasonable and none announced itself. Rules 1–7
+are the controls that caught them. Rule 8 is the control those seven still lacked.
 
 If a search, a check, or a review is cut short, say so in the first sentence.
 Do not let a summary turn an unfinished step into a finished one.
@@ -90,6 +100,7 @@ Attach one access label to each factual claim you record or rely on:
   a proof step. Do not drop conditions and call the result unconditional.
 - Copy quotations, titles, years, and pages from the source. Do not reconstruct them.
 - Do not cite a reading, a file, or a check that is not in the tree.
+- Date a public error by the artifact that contains it. If the note that records it was written on another day, give both dates. Do not place the error before a control when the artifact is dated after the control.
 
 ## 2. Record what you could not search
 
@@ -115,6 +126,7 @@ Attach one access label to each factual claim you record or rely on:
 - When a priority sentence is withdrawn, delete it from every file that can ship:
   the manuscript, the statements file, the README, the changelog, and any
   fingerprint. A correction in one file does not clear the others.
+- End a contribution sentence with what it does not claim, how far each source it depends on was read, and which indexes did not open.
 
 ## 4. Every check must be able to fail
 
@@ -189,6 +201,16 @@ A check that cannot miss is not a check. For each verification:
   it unblocked. Make that change before the release, not in order to unblock it.
 - After release, download the archive and confirm it contains the manuscript,
   the programs, and the data the notes name. A changelog heading is not evidence.
+  Run the gate on that download. A green check on the branch is not the archive.
+
+## 8. The gate is a program
+
+A checklist the drafting session can tick is not a gate.
+
+- Before a preprint, release, or tag, a committed program recomputes every public count from the file that produced it and exits non-zero if the prose disagrees.
+- The same program must reject a planted fault: a wrong count, or a version string that does not match. Record that the fault failed and that the clean tree passed. A program that has not been shown to fail is not a gate.
+- Do not change the program so this release passes. If the program is wrong, fix it first, and name the fault it previously missed.
+- The archive that is tagged is the archive that was checked. Build it from the same commit, then download the published file and compare it to that build.
 
 ## Quality checklist (before any preprint or release)
 
@@ -211,6 +233,7 @@ A check that cannot miss is not a check. For each verification:
       by someone other than the drafting session.
 - [ ] **Reproducible** from a fresh checkout with pinned versions.
 - [ ] **Archive checked** by downloading it. It contains what the notes name.
+- [ ] **Gate is a program.** Public counts were recomputed from their files. A planted fault made the program fail. The downloaded archive matches the build that passed.
 
 ## Phrases to avoid, and what to write instead
 
@@ -224,3 +247,4 @@ A check that cannot miss is not a check. For each verification:
 | "Computed" (for a proof) | "`computer-assisted`: decided by `script.py`, which fails on <control>." |
 | "Holds in general" | "Proved on <the set that was proved>." |
 | "Does not replicate" (weak test) | State the test, its power, and the result. |
+| "The checklist passed" | "Checked by `gate.py`, which fails when the stated count is wrong." |

@@ -1,7 +1,7 @@
 {
   "name": "research-integrity",
-  "version": "1.1.0",
-  "description": "Controls for AI-assisted research, derived from a documented record of 80 failures: claim status and provenance, hypothesis checks, numbers copied from the run that produced them, adversarial verification, and checks that can fail.",
+  "version": "1.2.0",
+  "description": "Controls for AI-assisted research, derived from a documented record of 80 failures. A release gate is a program that recomputes public counts and fails on a planted fault.",
   "author": {
     "name": "Chase Hendrick",
     "url": "https://github.com/ChaseHendrick"

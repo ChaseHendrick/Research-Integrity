@@ -16,7 +16,7 @@ Rules without a real failure behind them are unlikely to be added. The skill sta
 
 - Keep `SKILL.md` short and concrete. Prefer one clear instruction over a paragraph of advice.
 - Keep the frontmatter `description` under 1024 characters. It decides when Claude loads the skill.
-- Run `python3 scripts/validate.py` before opening a pull request. CI runs it too.
+- Run `python3 scripts/validate.py`, `python3 docs/case-study/code/check_numbers.py`, and `python3 scripts/gate.py` before opening a pull request. CI runs them too.
 - Add a line to `CHANGELOG.md`, and bump `version` in `plugins/research-integrity/.claude-plugin/plugin.json`.
 
 ## Reporting a problem
