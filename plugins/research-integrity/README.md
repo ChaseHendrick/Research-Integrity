@@ -1,9 +1,11 @@
 # Research integrity
 
-Instructions for an assistant that is searching literature, checking a proof, running a numerical argument, or preparing a preprint. The plugin is one skill, `skills/research-integrity/SKILL.md`. It does not run a server, a hook, or a script. It does not send data anywhere, and it does not fetch pages on its own.
+Instructions for an assistant that is searching literature, checking a proof, running a numerical argument, or preparing a preprint. The skill is `skills/research-integrity/SKILL.md`.
 
-What Claude does with it: when the work is a research claim, Claude follows the skill. A claim is labelled with how it is known. A source that did not load is not written down as "nothing found." A check is not called passed unless it can fail. An in-project reading is not called peer review.
+On Claude Code, and on Cowork when the session is on your computer, the plugin also starts two local pieces. Neither opens a network connection, and neither runs in Claude Chat. The skill zip uploaded to Chat is the instructions only.
 
-What it does not do: it does not open a network connection, store an account, or read a credential. Anything Claude reads is a file you already asked it to work on in that conversation. Uninstalling the skill removes the instructions. There is no separate copy of your work.
+**Local server.** `.mcp.json` runs `python3` on `scripts/server.py`. The tools are `scan_text` (report a few overclaim phrases), `read_field` (copy one named field from a file in the project), and `append_search` (append a search row you already stated to `.research-integrity/searches.jsonl` in the project). `read_field` refuses a path outside the project. `append_search` refuses an empty query. Nothing is sent off the machine.
 
-The rules come from a public record of 80 failures in one research project. That record is evidence for the rules. It is not a claim that following the skill removes errors, and this plugin is not an Anthropic product.
+**Hook.** `hooks/hooks.json` runs `python3` on `scripts/check_write.py` before Write and Edit. It looks at the text about to be written. By default it warns and lets the write through. It blocks only if the project has `.research-integrity.json` with `"block": true`. A missing or broken config does not block.
+
+The rules come from a public record of 80 failures in one research project. The hook and the server do not measure whether those rules reduce errors. This plugin is not an Anthropic product.

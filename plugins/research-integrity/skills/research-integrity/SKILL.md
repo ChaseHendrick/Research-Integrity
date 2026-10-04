@@ -18,7 +18,7 @@ license: Apache-2.0
 
 # Research integrity
 
-Release: 1.3.0
+Release: 1.4.0
 
 ## Goal
 
@@ -215,6 +215,20 @@ When it is on:
 - The same program must reject a planted fault: a wrong count, or a version string that does not match. Record that the fault failed and that the clean tree passed. A program that has not been shown to fail is not a gate.
 - Do not change the program so this release passes. If the program is wrong, fix it first, and name the fault it previously missed.
 - The archive that is tagged is the archive that was checked. Build it from the same commit, then download the published file and compare it to that build.
+
+## Local tools, when the plugin is installed
+
+Claude Code, and Cowork on the user's computer, start a local process. Claude Chat does not. The skill zip has no server and no hook. Do not claim a tool ran if it is not connected.
+
+The process does not open a network connection.
+
+- `scan_text` reports the phrases in the table below. A hit is not proof the sentence is false.
+- `read_field` copies one named field from a file in the project. Use that text in the claim. If it refuses, the field was not there. Do not take a nearby field.
+- `append_search` writes one search row you already made. Do not call it for a search you did not run. An empty query is refused.
+
+A hook runs before Write and Edit, with the same phrase list. It blocks only when the project file `.research-integrity.json` contains `"block": true`. Otherwise it warns and the write proceeds. Markdown tables and code fences are skipped. Files inside the plugin itself are skipped.
+
+Not claimed. The hook cannot tell every quotation of a mistake from a new claim. The server does not search.
 
 ## Quality checklist (before any preprint or release)
 

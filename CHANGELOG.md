@@ -13,6 +13,10 @@
 - Case study v1.3: a new discussion section on the cost of the controls (measured session overhead and how usage limits cut verification short), links to the issues filed from it, and consistency fixes.
 - Added the case study *Eighty Failures* (Markdown and PDF), its two figures and the 80-incident dataset under [docs/case-study/](docs/case-study/), and linked them from the README and the evidence page.
 
+## 1.4.0 (2026-10-04)
+
+- A local MCP server and a Write/Edit hook, both stdlib Python, no network. The hook warns by default and blocks only when the project sets `"block": true`. Claude Chat does not run either.
+
 ## 1.3.0 (2026-10-04)
 
 - Beating a checklist is optional. Rules 1–7 stay on. Section 8 applies only when someone asks, or when the project already has a gate they chose. This repository still runs `scripts/gate.py`.

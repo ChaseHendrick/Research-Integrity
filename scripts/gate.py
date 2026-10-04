@@ -15,6 +15,7 @@ import csv
 import io
 import json
 import re
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
@@ -116,8 +117,25 @@ def failure_controls():
         raise GateError("planted version mismatch did not fail")
 
 
+def script_controls():
+    folder = ROOT / "plugins/research-integrity"
+    for name in ("hooks/hooks.json", ".mcp.json"):
+        try:
+            json.loads((folder / name).read_text())
+        except json.JSONDecodeError as exc:
+            raise GateError(f"{name} is not JSON: {exc}") from exc
+    for name in ("phrases.py", "check_write.py", "server.py"):
+        completed = subprocess.run(
+            [sys.executable, str(folder / "scripts" / name), "--self-test"],
+            capture_output=True, text=True,
+        )
+        if completed.returncode != 0:
+            raise GateError(f"{name} --self-test failed: {completed.stdout} {completed.stderr}")
+
+
 def main():
     failure_controls()
+    script_controls()
     skill = SKILL.read_text()
     readme = README.read_text()
     incidents = INCIDENTS.read_text()

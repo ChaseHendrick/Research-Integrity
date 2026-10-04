@@ -8,7 +8,7 @@ authors:
     orcid: "https://orcid.org/0009-0002-9754-6087"
 repository-code: "https://github.com/ChaseHendrick/Research-Integrity"
 license: Apache-2.0
-version: 1.3.0
+version: 1.4.0
 date-released: 2026-10-04
 references:
   - type: report
