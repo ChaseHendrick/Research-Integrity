@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "research-integrity: a Claude skill that keeps research claims within their evidence"
+message: "If you use this skill or its evidence, please cite it."
+type: software
+authors:
+  - family-names: Hendrick
+    given-names: Chase
+    orcid: "https://orcid.org/0009-0002-9754-6087"
+repository-code: "https://github.com/ChaseHendrick/research-integrity"
+license: Apache-2.0
+version: 1.0.0
+date-released: 2026-10-04
+keywords:
+  - research integrity
+  - AI-assisted research
+  - Claude
+  - verification
+  - literature search
