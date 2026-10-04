@@ -18,7 +18,7 @@ license: Apache-2.0
 
 # Research integrity
 
-Release: 1.4.2
+Release: 1.4.3
 
 ## Goal
 
@@ -218,17 +218,14 @@ When it is on:
 
 ## Local tools, when the plugin is installed
 
-Claude Code, and Cowork on the user's computer, start a local process. Claude Chat does not. The skill zip has no server and no hook. Do not claim a tool ran if it is not connected.
+Claude Code, and Cowork on the user's computer, start two shell scripts. Claude Chat does not. The skill zip has no server and no hook. Do not claim a tool ran if it is not connected.
 
-The process does not open a network connection.
+Neither script starts another program, and neither opens a network connection.
 
-- `scan_text` reports the phrases in the table below. A hit is not proof the sentence is false.
-- `read_field` copies one named field from a file in the project. Use that text in the claim. If it refuses, the field was not there. Do not take a nearby field.
-- `append_search` writes one search row you already made. Do not call it for a search you did not run. An empty query is refused.
+- The hook scans the raw Write or Edit for the phrases in the table below. It warns, and the write proceeds, unless the current directory has `.research-integrity.json` containing `"block": true`. Then it blocks. It does not skip a table or a code fence. A hit is not proof the sentence is false.
+- The server's only tool is `scan_text`, which reports those same phrases. It does not open a file and it does not search. It does not copy a number out of a file and it does not store a search row.
 
-A hook runs before Write and Edit, with the same phrase list. It blocks only when the project file `.research-integrity.json` contains `"block": true`. Otherwise it warns and the write proceeds. Markdown tables and code fences are skipped. Files inside the plugin itself are skipped.
-
-Not claimed. The hook cannot tell every quotation of a mistake from a new claim. The server does not search.
+Not claimed. The hook cannot tell a quotation of a mistake from a new claim.
 
 ## Quality checklist (before any preprint or release)
 

@@ -1,8 +1,8 @@
 {
   "name": "research-integrity",
   "displayName": "Research integrity",
-  "version": "1.4.2",
-  "description": "Keeps a research claim inside the evidence that supports it. On Claude Code, a local checker warns on a few overclaim phrases and can copy a number from a file in the project. It sends nothing and fetches nothing. Chat gets the instructions only.",
+  "version": "1.4.3",
+  "description": "Keeps a research claim inside the evidence that supports it. On Claude Code, a shell hook warns on a few overclaim phrases. It sends nothing and fetches nothing. Chat gets the instructions only.",
   "author": {
     "name": "Chase Hendrick"
   },
