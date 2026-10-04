@@ -127,7 +127,7 @@ In-project AI review was the control that caught the most: separate sessions tol
 
 ![Figure 1 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
 
-- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.8. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what skill 1.1.0 added after the study window.
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.9. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what skill 1.1.0 added after the study window.
 - **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
 - **[See the evidence for each rule](docs/EVIDENCE.md)**.
 

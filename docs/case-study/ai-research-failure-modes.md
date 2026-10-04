@@ -4,7 +4,7 @@
 
 Chase Hendrick · Hendrick Research · ORCID [0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Version 1.8 · 4 October 2026 · Case study, not peer reviewed
+Version 1.9 · 4 October 2026 · Case study, not peer reviewed
 
 ---
 
@@ -68,17 +68,17 @@ Yeung (2026) is the closest published case to class V. Over five weeks an LLM co
 
 **The workspace.** GENChase ([github.com/ChaseHendrick/GENChase](https://github.com/ChaseHendrick/GENChase)) is a single-author research and simulation workspace. Over the study window it produced:
 
-- nine preprints with 55 Zenodo version DOIs, on point-vortex collapse, neural-field and Hodgkin–Huxley traveling waves, the classical double pendulum, eigenspectra of neural population codes, and rotating waves in rings of cardiac cells;
+- nine preprints, the `ready` entries in `papers/papers.json` at this commit, with 55 distinct Zenodo version DOIs in that file, on point-vortex collapse, neural-field and Hodgkin–Huxley traveling waves, the classical double pendulum, eigenspectra of neural population codes, and rotating waves in rings of cardiac cells;
 - a draft software paper;
 - a browser-based studio of scientific simulations.
 
-**The assistants.** Most work was done in Claude Code sessions, including cloud sessions with a sandboxed network. Grok worked on the repository from about 27 to 29 September and on the cardiac study on 1 October. OpenAI's Codex ran part of the cardiac computations around 30 September and 2 October, and ChatGPT was used in small amounts. 58 of the 151 commits on `main` carry a `Claude-Session:` trailer, and seven carry `Co-authored-by: Claude`. A trailer shows that a commit was made from a Claude Code session. It does not show which model wrote a given sentence, and a missing trailer does not mean another assistant did the work. **This study therefore does not attribute individual errors to individual models.**
+**The assistants.** Most work was done in Claude Code sessions, including cloud sessions with a sandboxed network. Grok worked on the repository from about 27 to 29 September and on the cardiac study on 1 October. OpenAI's Codex ran part of the cardiac computations around 30 September and 2 October, and ChatGPT was used in small amounts. Of the 315 commits at `98e7fc4`, 102 carry a `Claude-Session:` trailer and 8 carry `Co-authored-by: Claude`, counted from `git log` on 4 October 2026. In the 15 calendar days from 19 September to 3 October the same count is 59 trailers and 8 co-author lines, out of 245 commits. Version 1.8 said 58 of 151, and seven co-author lines. A trailer shows that a commit was made from a Claude Code session. It does not show which model wrote a given sentence, and a missing trailer does not mean another assistant did the work. **This study therefore does not attribute individual errors to individual models.**
 
 **The owner's role.** The owner set direction, made editorial decisions, fetched papers the sandbox could not reach, and approved releases. Several controls in this study began as owner instructions.
 
 ## 3. Method
 
-**Source.** The repository at commit `98e7fc4` (3 October 2026), read without modification. The git history starts at a root commit dated 22 September. Events from 19 to 21 September are dated only by the notes that record them.
+**Source.** The repository at commit `98e7fc4` (3 October 2026), read without modification. `git rev-list --count 98e7fc4`, run on 4 October 2026, is 315 commits, dated from 17 September 2026 to 3 October 2026. Version 1.8 said the history started at a root commit on 22 September and contained 151 commits. Neither sentence matches this commit.
 
 **Unit of analysis.** An *incident* is a recorded instance in which a claim, number, check, citation or process step was wrong or unsupported, and the repository records it being found. Where one report bundles several related findings, they form a single incident.
 
@@ -92,17 +92,13 @@ Yeung (2026) is the closest published case to class V. Over five weeks an LLM co
 
 "Public" means the error was present in a tagged GitHub release, a companion or Zenodo release, or the repository while it was public. Where this could not be established, the incident is marked *uncertain*.
 
-**Verification of the evidence.** 260 file-and-line quotations were checked mechanically: the quoted text must occur on exactly that line in the repository. Three claims were checked by re-execution:
-
-- the v0.5.0 tag still contains the wrong agreement figure;
-- the v0.6.2 tag still contains the factor-2 eigenvalues;
-- the paper quality check fails at the hh-pulse release commit.
+**Verification of the evidence.** Version 1.5 reported that 260 file-and-line quotations had been checked mechanically, and that three claims had been re-executed: the v0.5.0 tag still contains the wrong agreement figure, the v0.6.2 tag still contains the factor-2 eigenvalues, and the paper quality check fails at the hh-pulse release commit. This version did not re-run those checks. `code/check_numbers.py` does not re-open GENChase.
 
 **Coder.** The evidence base was compiled by an AI agent (Claude, in Claude Code) under the owner's direction. The incidents are drawn from the repository's own records, which were themselves largely written by AI sessions. Section 8 discusses what this implies.
 
 **Reliability of the classification.** A second coder classified all 80 incidents. The coder was Claude Sonnet in a separate session. It saw only each incident's short name and evidence quote, under shuffled identifiers, and a written codebook, and it did not see these labels. It agreed on **74 of 80** classes. Cohen's κ is **0.905**. Chance agreement is 1356/6400 = 0.211875, from the two label margins. Both figures are recomputed from `incidents.csv` by `code/check_numbers.py`. The six disagreements are W14 (W against V), W15 (W against P), V13 (V against W), V16 (V against W), V19 (V against P) and P14 (P against V). V16 is a README that printed the agreement values `1 ; 1` with no measurement: a check with nothing to check, or a wrong number. The status line that printed "Poisson solved" unconditionally is V15, and both coders marked it V. Version 1.5 gave that line as the example of a disagreement. That example was wrong, and the confidence ratings it also reported were not deposited, so they are not reported here. The codebook shown to the second coder is not in this repository. Agreement was measured for class only. Reach and detecting control were not re-coded.
 
-**Rates.** Over 15 days and 151 commits, the record contains 80 incidents: about 5.3 per day, one per 1.9 commits, and 8.9 per preprint. These are rates of recorded and corrected failures, not of all failures.
+**Rates.** Incident dates run from 19 September to 3 October, 15 calendar days, with one incident undated. Those 15 days contain 245 of the 315 commits. The record contains 80 incidents: about 5.3 per calendar day, one per 3.1 commits in that window, and 8.9 per preprint. These are rates of recorded and corrected failures, not of all failures. The nine preprints are the entries in `papers/papers.json` at this commit whose status is `ready`. The software paper is a draft and is not one of the nine. The 55 Zenodo version DOIs are the distinct `10.5281/zenodo.` identifiers in that same file, counted on 4 October 2026.
 
 ## 4. A taxonomy of failures
 
@@ -152,7 +148,8 @@ Eighteen incidents involve how sources were found, read and cited. Three mechani
 
 - a claim resting on a paper that "was not read" (L6);
 - a source's printed value said to match for two examples when it matched one (L12);
-- a theorem misstated as unconditional when it assumes five conditions (L14, L15);
+- Hastings's theorem misstated, and the wrong paper cited (L14);
+- a theorem with five conditions reported as unconditional (L15);
 - misrepresentations of the Smale–Birkhoff theorem (L16);
 - wrong titles, pages and credits (L10, L13, L17);
 - in the cardiac-rings manuscript, a reading cited that did not exist (L18).
@@ -294,11 +291,11 @@ The skill in this repository, version 1.1.0, was committed on 4 October 2026, af
 
 | Added in skill 1.1.0 | Incident it answers |
 |---|---|
-| A status on every claim: `proved`, `computer-assisted`, `cited`, `numerical`, or `conjectured`. An enclosure is not an exact value, and a numerical result is not a proof step. | W11 |
+| A status on every claim: `proved`, `computer-assisted`, `cited`, `numerical`, or `conjectured`. An enclosure is not an exact value, and a numerical result is not a proof step. | W11, V13 |
 | A cited theorem is applied only after its hypotheses are checked against this instance. Dropped conditions are not an unconditional theorem. | L11, L15 |
-| Every public number is copied from a named field of the run that produced it, and the claimed domain is the proved domain. | W1, W7, W10 |
+| Every public number is copied from a named field of the run that produced it, and the claimed domain is the proved domain. | W1, W7, W8, W10 |
 | A failure control must fail for the reason under test. A control that fails for a side reason, or that cannot fail to fail, is not a control. | V7, V8 |
-| A search, check, or review that was cut short is not a pass. | P6, P8 |
+| A search, check, or review that was cut short, or that exists only in an uncommitted container, is not a pass. | P6, P7, P8, P11 |
 | When a priority sentence is withdrawn, it is deleted from every file that can ship, not only from the note that records the withdrawal. | N4 |
 | A review note names every AI tool that wrote, searched, checked, or reviewed. | P13 |
 | No co-author trailer is added for an identity that was not checked. | P4 |
@@ -345,11 +342,11 @@ These follow from the incidents and are framed as requests. Several are filed on
 
 ## 8. Limitations
 
-- **Single case, short window.** One workspace, one owner and twelve days of git history (22 September to 3 October). The incidence of each class will differ elsewhere.
+- **Single case, short window.** One workspace and one owner. At the cited commit the git history runs from 17 September to 3 October 2026 (315 commits). Recorded incidents are dated 19 September to 3 October, one of them undated. The incidence of each class will differ elsewhere.
 - **Recorded incidents only.** The study sees only errors the workspace recorded finding. Undetected errors are by definition absent, so the counts are a lower bound, and the share caught by each control is a share of what was caught at all.
 - **The record was written largely by AI sessions**, and the evidence base was compiled by an AI agent. The quotations were checked mechanically against the source, and the classification was checked by a second coder (Section 3), but the selection of incidents was not independently replicated.
 - **Attribution.** Commit trailers show which tool session committed work, not which model wrote any sentence. No incident here should be read as a finding about a specific model.
-- **Pre-history.** Events before 22 September are dated only by the notes that record them.
+- **Earlier history.** Version 1.8 said events before 22 September were dated only by the notes, and that the history began that day. Commits exist from 17 September, including on 19, 20 and 21 September. The incident dates are still the dates the notes record, not a separate date for the commit that introduced each error.
 - **Coding judgment.** A second Claude model agreed on the class of 74 of 80 incidents (κ = 0.905). It is not an outside reader. Reach and detecting control were coded once. The second coder's confidence ratings were not deposited. Version 1.6 fills the eleven controls that coding had left unnamed, from the record of the correction; class and reach were not changed. Several are marked uncertain in the appendix.
 - **Dates.** Incidents are dated by when they were recorded, not by when the error was introduced (Figure 2). N4, L10 and L11 are the cases where that distinction matters in the public counts.
 - **What the programs check.** `code/check_numbers.py` recomputes Table 1, the detector counts and κ from `incidents.csv`. `code/make_figures.py` writes Figures 1 and 2. Neither program re-opens GENChase. The count of 260 quotations, the three re-executions named in Section 3, and the session-overhead measurements were not re-established for this version.
@@ -368,7 +365,7 @@ All evidence for the incidents is in the public repository [ChaseHendrick/GENCha
 
 ## Use of AI
 
-The incident list and version 1.5 of this manuscript were drafted with Claude (Opus 5.5) in Claude Code. An AI agent compiled the evidence base under the author's direction. The second coding was Claude Sonnet in a separate session. Version 1.6 assigned the eleven unnamed detectors from the correction record. Version 1.7 withdrew the contribution sentence and compared Yeung (2026). Version 1.8 records that skill 1.1.0, committed after the study window, is not the protocol in Section 5.2. Versions 1.7 and 1.8 were drafted with Grok under the author's direction on 4 October 2026. The skill text itself is the author's commit, not this revision.
+The incident list and version 1.5 of this manuscript were drafted with Claude (Opus 5.5) in Claude Code. An AI agent compiled the evidence base under the author's direction. The second coding was Claude Sonnet in a separate session. Version 1.6 assigned the eleven unnamed detectors from the correction record. Version 1.7 withdrew the contribution sentence and compared Yeung (2026). Version 1.8 records that skill 1.1.0, committed after the study window, is not the protocol in Section 5.2. Version 1.9 replaces the commit counts that did not match `98e7fc4`. Versions 1.7 to 1.9 were drafted with Grok under the author's direction on 4 October 2026. The skill text itself is the author's commit, not this revision.
 
 Sources carried forward from version 1.5 (Lu et al., Beel et al., Si et al., Walters and Wilder, Wang et al., Gröbli, Kimura) had been read at abstract level. For version 1.7 the new comparisons were read as follows. Weinhold (2026): the author's PDF, for the title, the five error types, the comparison with Collins et al., and the stated limitations; the proofs were not checked. Li et al. (2026): the arXiv HTML, including the failure narratives and the sentence claiming a first in-depth case study. Bui-Thanh (2026): the arXiv PDF, for the failure-mode passages and the claim to document a real project; the quadrature proofs were not checked. Banerjee and Bhattacharjee (2026): the arXiv PDF, for the taxonomy, the eight-proof audit and the stated limitations. Trehan and Chopra (2026) and Guo et al. (2025): the arXiv HTML, for the setting, the failure lists and the stated scope. Feng et al. (2026): the arXiv HTML section that contains the Erdős grading (their Table 5); the rest of that paper was not read for this revision. Fei et al. (2026): the abstract and the passage that states the 45 patterns; the patterns were not read one by one. Smyth et al. (2026) and Collins et al. (2024): abstract, and for Collins the significance statement. Yeung (2026): the arXiv HTML, for the abstract, the three failure narratives (the 112 recorded as a maximum, the length-7 verdict, and the three-week sweep) and the statement that checking final outputs does not catch an unchecked intermediate; the new code bounds were not re-run. The author is responsible for the content.
 
