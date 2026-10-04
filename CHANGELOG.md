@@ -2,8 +2,8 @@
 
 ## Unreleased
 
-- Case study v1.6: the eleven incidents with no named control are assigned from the record that caught them, and Table 2 and Figure 2 are sorted by that count.
-
+- Case study v1.7: the claim to be unaware of an earlier record is withdrawn. Section 1.1 compares Weinhold (2026), Li et al. (2026), Bui-Thanh (2026) and Yeung (2026), and the benchmark taxonomies those readings actually reached. κ is 0.905, recomputed from `incidents.csv`. The Poisson-solved line is no longer given as a coder disagreement. Figures 1 and 2 are drawn by `docs/case-study/code/make_figures.py`.
+- Case study v1.6: the eleven incidents with no named control are assigned from the record that caught them, and Table 2 and Figure 1 are sorted by that count.
 - Case study v1.5: Appendix B with the full session-overhead measurements and a third figure.
 - Case study v1.4: connectors that silently fail to load as another source of false "nothing found" results.
 - Case study v1.3: a new discussion section on the cost of the controls (measured session overhead and how usage limits cut verification short), links to the issues filed from it, and consistency fixes.

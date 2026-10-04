@@ -125,9 +125,9 @@ The worst single failure: five results were announced as "the first public sourc
 
 In-project AI review was the control that caught the most: separate sessions told to find errors caught 39 of the 80 incidents (49%).
 
-![Figure 2 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
+![Figure 1 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
 
-- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), 17 pages, with related work, an independent coding check (κ = 0.91) and two figures.
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.7. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1.
 - **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
 - **[See the evidence for each rule](docs/EVIDENCE.md)**.
 

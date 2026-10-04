@@ -16,3 +16,4 @@ jobs:
         with:
           python-version: "3.12"
       - run: python3 scripts/validate.py
+      - run: python3 docs/case-study/code/check_numbers.py
