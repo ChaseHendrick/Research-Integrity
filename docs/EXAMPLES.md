@@ -15,6 +15,7 @@ Short before-and-after examples of the skill at work. They are illustrative, mod
 > Query: "self-similar collapse" "three point vortices" winding   Date: 2026-09-20
 > Opened: Aref 2010 (read-directly, §4); Gotoda 2020 (abstract-only)
 > Blocked: link.springer.com, arxiv.org (network policy); jstage.jst.go.jp (timeout)
+> Stopped: no
 > Conclusion: No earlier statement of the minimum in the two sources that loaded.
 > ```
 > The likeliest homes for this result, the Japanese and Springer journals, could not be opened, so this search is weak evidence either way. Before calling it new: search for the closed form itself, and get Kimura (1987) and Gröbli (1877) read in full.
@@ -42,7 +43,7 @@ In the real case, the result was in both of those papers.
 
 **After**
 
-> Hastings [12, Theorem 1] proves existence under his Conditions 1–5 (`read-directly`, §2–3). We have not checked that our parameters satisfy Condition 4.
+> Hastings [12, Theorem 1] assumes Conditions 1–5 (`read-directly`, §2–3). Conditions 1–3 and 5 hold for these parameters. Condition 4 was not checked, so the theorem is not applied. Status: `cited` for the statement of the theorem only, not for this instance.
 
 ## A review label
 
@@ -53,6 +54,24 @@ In the real case, the result was in both of those papers.
 **After**
 
 > The manuscript was read by three separate AI sessions in this project, each told to find errors (not an outside review). Two further sessions tried to refute each must-fix finding; 5 of 7 survived and were fixed. The fixes were checked by a session other than the one that drafted the paper.
+
+## A number in a claim
+
+**Before**
+
+> The agreement is 6 × 10⁻²⁵. The identity is verified.
+
+**After**
+
+> **Check record**
+> ```
+> Check: verify_general_mu.py for the μ-grid minima
+> Binds: the commit that produced data/mu-grid.txt
+> Success match: the script exits 0 only when the named field is inside its bound
+> Failure control: swapping in the other metric must fail. Observed: fail
+> Number taken from: mu_grid_agreement in that log, digits truncated: 4.5 × 10⁻²¹
+> ```
+> The figure 6 × 10⁻²⁵ is a different metric and is not used. Status of the enclosure: `computer-assisted`. This comparison is `numerical` and is not a proof step.
 
 ## A release
 

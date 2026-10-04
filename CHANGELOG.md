@@ -9,6 +9,12 @@
 - Case study v1.3: a new discussion section on the cost of the controls (measured session overhead and how usage limits cut verification short), links to the issues filed from it, and consistency fixes.
 - Added the case study *Eighty Failures* (Markdown and PDF), its two figures and the 80-incident dataset under [docs/case-study/](docs/case-study/), and linked them from the README and the evidence page.
 
+## 1.1.0 (2026-10-04)
+
+- The skill now requires a status on every claim (`proved`, `computer-assisted`, `cited`, `numerical`, `conjectured`), a hypothesis check before a cited theorem is applied, and a named source field for every public number.
+- A check's failure control must fail for the reason under test. A cut-short search, check, or review is not a pass.
+- Superseded priority wording has to be removed from every file that ships. Review notes name every AI tool used, and do not invent a co-author.
+
 ## 1.0.0 (2026-10-04)
 
 First release.

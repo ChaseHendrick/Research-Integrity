@@ -98,10 +98,10 @@ The same situation, in two columns. The right-hand column is what the skill is f
 
 ## The seven rules
 
-1. **Label every claim with how it is known**: `read-directly`, `abstract-only`, `search-summary`, `repository` or `reasoning`.
+1. **Label every claim with how it is known**, and with its status: `proved`, `computer-assisted`, `cited`, `numerical`, or `conjectured`.
 2. **Record what could not be searched.** A blocked source goes in the log, never into "no results".
 3. **Never infer novelty from a search**, or from a numerical check that succeeded.
-4. **Every check must be able to fail**, as shown by failure controls and mutation testing.
+4. **Every check must be able to fail** for the reason it tests. A number in a claim is copied from the run that produced it.
 5. **Review adversarially, then doubt the reviewer.** The drafting session never checks its own fixes.
 6. **Label review honestly.** An AI reading is not peer review.
 7. **Do not bend a gate to fit a release.**
