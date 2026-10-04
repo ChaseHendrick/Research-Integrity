@@ -118,54 +118,21 @@ def failure_controls():
 
 
 def script_controls():
-    folder = ROOT / "plugins/research-integrity"
+    plugin = ROOT / "plugins/research-integrity"
     for name in ("hooks/hooks.json", ".mcp.json"):
-        try:
-            json.loads((folder / name).read_text())
-        except json.JSONDecodeError as exc:
-            raise GateError(f"{name} is not JSON: {exc}") from exc
+        if (plugin / name).exists():
+            raise GateError(f"{name} is a command the directory will not follow")
+    for path in plugin.rglob("*"):
+        if path.suffix in {".sh", ".py"}:
+            raise GateError(f"plugin contains a script the directory will not follow: {path.relative_to(plugin)}")
+    checks = ROOT / "scripts/checks"
     for name in ("phrases.py", "check_write.py", "server.py"):
         completed = subprocess.run(
-            [sys.executable, str(folder / "scripts" / name), "--self-test"],
+            [sys.executable, str(checks / name), "--self-test"],
             capture_output=True, text=True,
         )
         if completed.returncode != 0:
             raise GateError(f"{name} --self-test failed: {completed.stdout} {completed.stderr}")
-    shell_controls(folder)
-
-
-def shell_controls(folder):
-    for name in ("scripts/check_write.sh", "scripts/server.sh"):
-        text = (folder / name).read_text()
-        for banned in ("python", ".py", "npx", "uvx", "$(", "`", ".."):
-            if banned in text:
-                raise GateError(f"{name} contains {banned}")
-    hook = folder / "scripts/check_write.sh"
-    planted = subprocess.run(
-        ["bash", str(hook)],
-        input='{"content":"This is the first proof."}\n',
-        capture_output=True, text=True,
-    )
-    if planted.returncode != 0 or "this is the first" not in planted.stderr:
-        raise GateError(f"shell hook did not warn: {planted.returncode} {planted.stderr}")
-    clean = subprocess.run(
-        ["bash", str(hook)],
-        input='{"content":"Searches of X found no earlier statement."}\n',
-        capture_output=True, text=True,
-    )
-    if clean.returncode != 0 or clean.stderr.strip():
-        raise GateError(f"shell hook flagged a bounded sentence: {clean.returncode} {clean.stderr}")
-    server = subprocess.run(
-        ["bash", str(folder / "scripts/server.sh")],
-        input='{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"scan_text","arguments":{"text":"This is the first proof."}}}\n',
-        capture_output=True, text=True,
-    )
-    if server.returncode != 0 or "this is the first" not in server.stdout:
-        raise GateError(f"shell server missed the planted phrase: {server.stdout} {server.stderr}")
-    try:
-        json.loads(server.stdout.strip())
-    except json.JSONDecodeError as exc:
-        raise GateError(f"shell server reply is not JSON: {exc}") from exc
 
 
 def main():

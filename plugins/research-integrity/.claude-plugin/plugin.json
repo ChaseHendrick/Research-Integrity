@@ -1,8 +1,8 @@
 {
   "name": "research-integrity",
   "displayName": "Research integrity",
-  "version": "1.4.3",
-  "description": "Keeps a research claim inside the evidence that supports it. On Claude Code, a shell hook warns on a few overclaim phrases. It sends nothing and fetches nothing. Chat gets the instructions only.",
+  "version": "1.4.4",
+  "description": "Keeps a research claim inside the evidence that supports it. Labels how each claim is known, records sources that did not load, and requires a check that can fail. Instructions only: it sends nothing and fetches nothing.",
   "author": {
     "name": "Chase Hendrick"
   },

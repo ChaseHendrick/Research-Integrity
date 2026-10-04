@@ -1,7 +1,0 @@
-{
-  "mcpServers": {
-    "integrity": {
-      "command": "${CLAUDE_PLUGIN_ROOT}/scripts/server.sh"
-    }
-  }
-}

@@ -13,6 +13,10 @@
 - Case study v1.3: a new discussion section on the cost of the controls (measured session overhead and how usage limits cut verification short), links to the issues filed from it, and consistency fixes.
 - Added the case study *Eighty Failures* (Markdown and PDF), its two figures and the 80-incident dataset under [docs/case-study/](docs/case-study/), and linked them from the README and the evidence page.
 
+## 1.4.4 (2026-10-04)
+
+- The plugin ships no hook and no server. The directory follows a command only when the script has no variables and opens no path, which a checker cannot do. The phrase checks remain in `scripts/checks/` for this repository. They are not part of the plugin.
+
 ## 1.4.3 (2026-10-04)
 
 - The hook and the server are the shell scripts themselves. They start no other program, so there is no second file for the directory to refuse to follow. The server only reports phrases. It does not open a file.
