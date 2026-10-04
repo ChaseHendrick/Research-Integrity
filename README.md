@@ -3,7 +3,7 @@
 <p align="center">A Claude skill that keeps research claims within their evidence.</p>
 
 <p align="center">
-  <a href="https://github.com/ChaseHendrick/research-integrity/actions/workflows/validate.yml"><img src="https://github.com/ChaseHendrick/research-integrity/actions/workflows/validate.yml/badge.svg" alt="Validate"></a>
+  <a href="https://github.com/ChaseHendrick/Research-Integrity/actions/workflows/validate.yml"><img src="https://github.com/ChaseHendrick/Research-Integrity/actions/workflows/validate.yml/badge.svg" alt="Validate"></a>
   <img src="https://img.shields.io/badge/Claude-skill-163f35" alt="Claude skill">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-163f35" alt="Claude Code plugin">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License: Apache-2.0"></a>
@@ -27,7 +27,7 @@ It is plain instructions: no scripts, no network access, no API key.
 ### Claude Code
 
 ```
-/plugin marketplace add ChaseHendrick/research-integrity
+/plugin marketplace add ChaseHendrick/Research-Integrity
 /plugin install research-integrity@research-integrity
 ```
 
@@ -35,7 +35,7 @@ Restart the session if the skill does not appear. Claude loads it on its own whe
 
 ### claude.ai and Cowork
 
-1. Download `research-integrity.zip` from the [latest release](https://github.com/ChaseHendrick/research-integrity/releases/latest).
+1. Download `research-integrity.zip` from the [latest release](https://github.com/ChaseHendrick/Research-Integrity/releases/latest).
 2. In Claude, open **Settings → Capabilities → Skills** and upload the ZIP.
 3. Turn the skill on.
 
