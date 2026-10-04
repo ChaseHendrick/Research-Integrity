@@ -45,15 +45,54 @@ Copy [`plugins/research-integrity/skills/research-integrity/`](plugins/research-
 
 ## What changes
 
-| Situation | Without the skill | With the skill |
-|---|---|---|
-| A search finds nothing | "No prior work exists." | "No earlier statement in the sources that loaded; arxiv.org and link.springer.com could not be opened." |
-| Only a search summary was seen | Cited as if the page was read | Labelled `search-summary`, and never used for a proof step |
-| A result looks new | "This is the first …" | Searches for the closed form first, and states novelty only within the search's reach |
-| A verification script prints OK | "Verified." | Asks what wrong input the script rejects, and runs mutations to show it can fail |
-| A proof is drafted | The drafting session checks its own work | A separate session is told to find errors, and others try to refute its findings |
-| An AI reviewed the paper | "Independently reviewed" | "Read by a separate AI session; not an outside review" |
-| A release gate fails | The gate is adjusted so the release passes | The release waits, or the change to the gate is recorded with its reason |
+The same situation, in two columns. The right-hand column is what the skill is for.
+
+<table>
+  <thead>
+    <tr>
+      <th align="left">Situation</th>
+      <th align="left">Without the skill<br><em>The claim outruns the evidence</em></th>
+      <th align="left">With the skill<br><em>The claim stays inside the evidence</em></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A search finds nothing</td>
+      <td>"No prior work exists."</td>
+      <td>"No earlier statement in the sources that loaded. arXiv and Springer did not open."</td>
+    </tr>
+    <tr>
+      <td>Only a search summary was seen</td>
+      <td>Cited as if the page had been read.</td>
+      <td>Labelled <code>search-summary</code>. Not used in a proof step.</td>
+    </tr>
+    <tr>
+      <td>A result looks new</td>
+      <td>"This is the first …"</td>
+      <td>The closed form is searched for first. Novelty is stated only as far as that search reached.</td>
+    </tr>
+    <tr>
+      <td>A verification script prints OK</td>
+      <td>"Verified."</td>
+      <td>The input it must reject is named, and so is a mutation it catches.</td>
+    </tr>
+    <tr>
+      <td>A proof is drafted</td>
+      <td>The drafting session checks its own work.</td>
+      <td>A separate session looks for errors. Others try to refute what it finds.</td>
+    </tr>
+    <tr>
+      <td>An AI read the paper</td>
+      <td>"Independently reviewed."</td>
+      <td>"Read by a separate AI session. Not an outside review."</td>
+    </tr>
+    <tr>
+      <td>A release gate fails</td>
+      <td>The gate is changed so the release passes.</td>
+      <td>The release waits. A change to the gate is recorded, with its reason.</td>
+    </tr>
+  </tbody>
+</table>
 
 [See worked examples →](docs/EXAMPLES.md)
 
