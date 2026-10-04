@@ -34,6 +34,8 @@ _sup = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
 body = re.sub(r"[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+", lambda m: "^" + m.group(0).translate(_sup), body)
 # fpdf2's HTML subset has no h1–h3 size control worth fighting; keep the tags it accepts.
 body = body.replace("<h1>", "<h2>").replace("</h1>", "</h2>")
+# fpdf2 cannot nest <code> inside a table cell.
+body = body.replace("<code>", "").replace("</code>", "")
 
 pdf = FPDF(format="letter")
 pdf.set_auto_page_break(auto=True, margin=18)

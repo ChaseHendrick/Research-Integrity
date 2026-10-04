@@ -4,7 +4,7 @@
 
 Chase Hendrick · Hendrick Research · ORCID [0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Version 1.7 · 4 October 2026 · Case study, not peer reviewed
+Version 1.8 · 4 October 2026 · Case study, not peer reviewed
 
 ---
 
@@ -254,9 +254,9 @@ These readings were consistently productive:
 
 ![Figure 1. (A) The 80 incidents by class and reach. (B) Detections by control. An incident can have more than one detector. Referee sessions and the adversarial workflow do not overlap, so together they are 39 of the 80 incidents. Both panels are drawn from `incidents.csv` by `code/make_figures.py`.](fig-classes.svg)
 
-### 5.2 The protocol as it stands
+### 5.2 The protocol at the end of the window
 
-By the end of the study window the workspace had converged on the following controls. Each traces to incidents in Section 4.
+By 3 October the workspace had converged on the following controls. Each traces to incidents in Section 4. This is not a description of the skill as it stands now. Section 5.4 records what version 1.1.0 added after the window.
 
 **Provenance labels for every claim.** A gathered claim carries an access label: `read-directly`, `search-summary`, `repository`, `reasoning` or `legal-text`. "Do not take a search summary as a reading" (`RESEARCH.md:140`).
 
@@ -287,6 +287,21 @@ By recorded date, N1–N3, the wrong numbers in v0.5.0 and v0.6.2 (W1, W5, W6), 
 N4 does not. N4, L10 and L11 are the three public incidents dated 27 September. L10 and L11 are the credit and hypothesis errors in the superseded identities note (Section 4.2). N4 is priority wording left in a statements file. This paper dates them by the day they were recorded. It does not give a separate git date for the commit that introduced each one. Version 1.5 grouped N1–N4 together as predating the controls. That grouping is not what the recorded dates say.
 
 The public incidents dated after 25 September are those three, the studio comparison W14, the release and review-process incidents P1, P2, P3 and P14, and the cardiac-rings model description W18. V14, a fix list that called two items done that were not, is dated 28 September and is marked uncertain, not public. W18 shipped in cardiac-rings 1.1.0 and was found by a formula audit the next day. The window is short and the sample is one project. This section is a description of these dates, not a measured effect.
+
+### 5.4 What the skill added after the window
+
+The skill in this repository, version 1.1.0, was committed on 4 October 2026, after the source commit of this study (`98e7fc4`, 3 October). It keeps the controls in Section 5.2 and adds the rows below. Each row answers an incident already in the record. None of these sentences was a control during the window, and this study does not measure them.
+
+| Added in skill 1.1.0 | Incident it answers |
+|---|---|
+| A status on every claim: `proved`, `computer-assisted`, `cited`, `numerical`, or `conjectured`. An enclosure is not an exact value, and a numerical result is not a proof step. | W11 |
+| A cited theorem is applied only after its hypotheses are checked against this instance. Dropped conditions are not an unconditional theorem. | L11, L15 |
+| Every public number is copied from a named field of the run that produced it, and the claimed domain is the proved domain. | W1, W7, W10 |
+| A failure control must fail for the reason under test. A control that fails for a side reason, or that cannot fail to fail, is not a control. | V7, V8 |
+| A search, check, or review that was cut short is not a pass. | P6, P8 |
+| When a priority sentence is withdrawn, it is deleted from every file that can ship, not only from the note that records the withdrawal. | N4 |
+| A review note names every AI tool that wrote, searched, checked, or reviewed. | P13 |
+| No co-author trailer is added for an identity that was not checked. | P4 |
 
 ## 6. Discussion
 
@@ -338,6 +353,7 @@ These follow from the incidents and are framed as requests. Several are filed on
 - **Coding judgment.** A second Claude model agreed on the class of 74 of 80 incidents (κ = 0.905). It is not an outside reader. Reach and detecting control were coded once. The second coder's confidence ratings were not deposited. Version 1.6 fills the eleven controls that coding had left unnamed, from the record of the correction; class and reach were not changed. Several are marked uncertain in the appendix.
 - **Dates.** Incidents are dated by when they were recorded, not by when the error was introduced (Figure 2). N4, L10 and L11 are the cases where that distinction matters in the public counts.
 - **What the programs check.** `code/check_numbers.py` recomputes Table 1, the detector counts and κ from `incidents.csv`. `code/make_figures.py` writes Figures 1 and 2. Neither program re-opens GENChase. The count of 260 quotations, the three re-executions named in Section 3, and the session-overhead measurements were not re-established for this version.
+- **The skill is later than the window.** Section 5.2 is the protocol on 3 October. Section 5.4 is skill version 1.1.0, committed the next day. The 80 incidents do not test those added sentences.
 - **The prior-article search is bounded.** It did not open MathSciNet, zbMATH, Scopus or Web of Science. Section 1.1 is not evidence that no further case study exists.
 
 ## 9. Conclusion
@@ -348,11 +364,11 @@ Over the recorded window, GENChase contains 80 incidents of the five classes abo
 
 ## Data availability
 
-All evidence for the incidents is in the public repository [ChaseHendrick/GENChase](https://github.com/ChaseHendrick/GENChase) at commit `98e7fc4`. A reference `path:N` opens as `https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/path#LN`. The incident table is `incidents.csv` (80 rows: class, the second coder's class, date, evidence, detecting control, reach). From that file, `python3 docs/case-study/code/make_figures.py` writes Figures 1 and 2, and `python3 docs/case-study/code/check_numbers.py` checks Table 1, the detector counts, κ and those figures against the manuscript. The controls in Section 5.2 are packaged as a Claude skill in this repository. The session-overhead measurements are not regenerated by those programs; their commands are in [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400).
+All evidence for the incidents is in the public repository [ChaseHendrick/GENChase](https://github.com/ChaseHendrick/GENChase) at commit `98e7fc4`. A reference `path:N` opens as `https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/path#LN`. The incident table is `incidents.csv` (80 rows: class, the second coder's class, date, evidence, detecting control, reach). From that file, `python3 docs/case-study/code/make_figures.py` writes Figures 1 and 2, and `python3 docs/case-study/code/check_numbers.py` checks Table 1, the detector counts, κ and those figures against the manuscript. Section 5.2 is the protocol at the end of the window. The skill in this repository is that protocol plus Section 5.4 (version 1.1.0). The session-overhead measurements are not regenerated by those programs; their commands are in [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400).
 
 ## Use of AI
 
-The incident list and version 1.5 of this manuscript were drafted with Claude (Opus 5.5) in Claude Code. An AI agent compiled the evidence base under the author's direction. The second coding was Claude Sonnet in a separate session. Version 1.6 assigned the eleven unnamed detectors from the correction record. Version 1.7, including the withdrawal of the contribution sentence and the comparison with Yeung (2026), was drafted with Grok under the author's direction on 4 October 2026.
+The incident list and version 1.5 of this manuscript were drafted with Claude (Opus 5.5) in Claude Code. An AI agent compiled the evidence base under the author's direction. The second coding was Claude Sonnet in a separate session. Version 1.6 assigned the eleven unnamed detectors from the correction record. Version 1.7 withdrew the contribution sentence and compared Yeung (2026). Version 1.8 records that skill 1.1.0, committed after the study window, is not the protocol in Section 5.2. Versions 1.7 and 1.8 were drafted with Grok under the author's direction on 4 October 2026. The skill text itself is the author's commit, not this revision.
 
 Sources carried forward from version 1.5 (Lu et al., Beel et al., Si et al., Walters and Wilder, Wang et al., Gröbli, Kimura) had been read at abstract level. For version 1.7 the new comparisons were read as follows. Weinhold (2026): the author's PDF, for the title, the five error types, the comparison with Collins et al., and the stated limitations; the proofs were not checked. Li et al. (2026): the arXiv HTML, including the failure narratives and the sentence claiming a first in-depth case study. Bui-Thanh (2026): the arXiv PDF, for the failure-mode passages and the claim to document a real project; the quadrature proofs were not checked. Banerjee and Bhattacharjee (2026): the arXiv PDF, for the taxonomy, the eight-proof audit and the stated limitations. Trehan and Chopra (2026) and Guo et al. (2025): the arXiv HTML, for the setting, the failure lists and the stated scope. Feng et al. (2026): the arXiv HTML section that contains the Erdős grading (their Table 5); the rest of that paper was not read for this revision. Fei et al. (2026): the abstract and the passage that states the 45 patterns; the patterns were not read one by one. Smyth et al. (2026) and Collins et al. (2024): abstract, and for Collins the significance statement. Yeung (2026): the arXiv HTML, for the abstract, the three failure narratives (the 112 recorded as a maximum, the length-7 verdict, and the three-week sweep) and the statement that checking final outputs does not catch an unchecked intermediate; the new code bounds were not re-run. The author is responsible for the content.
 

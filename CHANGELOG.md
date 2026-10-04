@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Case study v1.8: Section 5.2 is the protocol on 3 October. Skill 1.1.0, committed the next day, is recorded separately in Section 5.4 and is not treated as having been in force during the window.
 - Case study v1.7: the claim to be unaware of an earlier record is withdrawn. Section 1.1 compares Weinhold (2026), Li et al. (2026), Bui-Thanh (2026) and Yeung (2026), and the benchmark taxonomies those readings actually reached. κ is 0.905, recomputed from `incidents.csv`. The Poisson-solved line is no longer given as a coder disagreement. Figures 1 and 2 are drawn by `docs/case-study/code/make_figures.py`.
 - Case study v1.6: the eleven incidents with no named control are assigned from the record that caught them, and Table 2 and Figure 1 are sorted by that count.
 - Case study v1.5: Appendix B with the full session-overhead measurements and a third figure.
