@@ -1,10 +1,10 @@
 # Eighty Failures: Error Modes and Controls in AI-Assisted Mathematical Research
 
-**A case study of one month in the GENChase research workspace**
+**A case study of two weeks in the GENChase research workspace**
 
 Chase Hendrick · Hendrick Research · ORCID [0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Version 1.2 · 4 October 2026 · Case study, not peer reviewed
+Version 1.3 · 4 October 2026 · Case study, not peer reviewed
 
 ---
 
@@ -26,7 +26,7 @@ In-project AI review caught more incidents than any other control. Referee readi
 
 The errors that reached the public cluster before the controls were in place. After a seven-item quality bar and adversarial second readings were introduced (25–26 September), one recorded manuscript error reached a published paper: a model description in the cardiac-rings 1.1.0 preprint, found by a formula audit the day after release. The other public failures after that date are release and packaging failures, plus one quality gate that was bypassed and then weakened.
 
-We describe the controls that emerged, report where they failed, and give recommendations for researchers and for the builders of AI research tools.
+We describe the controls that emerged and report where they failed. We also measure the fixed cost of the fresh AI sessions those controls depend on, about 34,000 to 65,600 tokens each before any work, and show how usage limits cut verification short. We close with recommendations for researchers and for the builders of AI research tools.
 
 ---
 
@@ -82,7 +82,7 @@ Studies of AI in research have so far looked at two things: **the outputs of aut
 
 "Public" means the error was present in a tagged GitHub release, a companion or Zenodo release, or the repository while it was public. Where this could not be established, the incident is marked *uncertain*.
 
-**Verification of the evidence.** 255 file-and-line quotations were checked mechanically: the quoted text must occur on exactly that line in the repository. Three claims were checked by re-execution:
+**Verification of the evidence.** 260 file-and-line quotations were checked mechanically: the quoted text must occur on exactly that line in the repository. Three claims were checked by re-execution:
 
 - the v0.5.0 tag still contains the wrong agreement figure;
 - the v0.6.2 tag still contains the factor-2 eigenvalues;
@@ -147,7 +147,7 @@ Eighteen incidents involve how sources were found, read and cited. Three mechani
 - wrong titles, pages and credits (L10, L13, L17);
 - in the cardiac-rings manuscript, a reading cited that did not exist (L18).
 
-Referee readings or full source readings caught all but two of these before release. The two exceptions concern a superseded identities note that sat in the public repository.
+Referee readings or full source readings caught most of these before release. Two reached the public, both in a superseded identities note that sat in the public repository (L10, L11). Three more may have (L1, L6, L9).
 
 ### 4.3 Class W: wrong numbers and overstated results
 
@@ -197,7 +197,7 @@ The code checker and the mathematics checker found the first defect independentl
 
 **Stale evidence (V20).** During the cardiac-rings 1.1.0 work, a review found that "the Hopf bridge could consume older point-proof successes without current-source binding" (`docs/HANDOFF-2026-10-02-cardiac-rings-1.1.0-codex.md:65`): a proof step could have been satisfied by results computed from an earlier version of the source. The program was changed to bind each result to the exact source it came from.
 
-The studio-side incidents (V15–V17) reached public releases before an uncertainty gate was added on 24 September. All the paper-side incidents in this class were caught before release.
+The studio-side incidents (V15–V17) reached public releases before an uncertainty gate was added on 24 September. Of the paper-side incidents in this class, all were caught before release except possibly one: V14, a fix list that called two items done that were not.
 
 ### 4.5 Class P: process and tooling
 
@@ -233,7 +233,7 @@ Other process incidents:
 | Other (cross-assistant review; this study) | 2 |
 | Not stated, not recorded or not detected | 11 |
 
-**In-project AI review, from referee readings and adversarial workflows, detected 39 of 80 incidents (49%).** Every referee note opens with a disclaimer such as: "An in-project reading by a separate AI agent (a headless Claude session started for it) … It is not an outside review." Most referee notes in the repository carry one.
+**In-project AI review, from referee readings and adversarial workflows, detected 39 of 80 incidents (49%).** Referee notes typically open with a disclaimer such as: "An in-project reading by a separate AI agent (a headless Claude session started for it) … It is not an outside review."
 
 These readings were consistently productive:
 
@@ -244,7 +244,7 @@ These readings were consistently productive:
 
 ### 5.2 The protocol as it stands
 
-By 30 September the workspace had converged on the following controls. Each traces to incidents in Section 4.
+By the end of the study window the workspace had converged on the following controls. Each traces to incidents in Section 4.
 
 **Provenance labels for every claim.** A gathered claim carries an access label: `read-directly`, `search-summary`, `repository`, `reasoning` or `legal-text`. "Do not take a search summary as a reading" (`RESEARCH.md:140`).
 
@@ -266,14 +266,13 @@ By 30 September the workspace had converged on the following controls. Each trac
 
 ![Figure 1. Incidents by the date they were recorded, colored by whether the error reached a public artifact. Dashed lines mark the introduction of four controls (23–26 September). Most incidents are dated by when they were recorded, often the day they were found, so errors made earlier and corrected later appear on the later date. Three public incidents dated 27 September are of this kind. One undated incident is omitted.](fig-timeline.svg)
 
-
 The public incidents cluster early. The novelty claims (N1–N4), the wrong numbers in v0.5.0 and v0.6.2 (W1, W5, W6), and the studio's vacuous checks (V15–V17) all predate the key controls:
 
 - the uncertainty gate (24 September);
 - the seven-item quality bar (25 September);
 - the adversarial verification workflow (26 September).
 
-After those dates, almost every recorded manuscript-content error was caught before the paper's release. There are two exceptions. V14, a fix list that called two items done that were not, may have shipped. W18, the cardiac-rings model description, did ship, and was found by an audit the day after release. The other public failures after 25 September were in releasing and packaging (P1–P3, P14) or in the studio (W14), not in the mathematics. The sample is small and the window short, so this is an observation, not a measured effect.
+After those dates, almost every recorded manuscript-content error was caught before the paper's release. There are two exceptions. V14, a fix list that called two items done that were not, may have shipped. W18, the cardiac-rings model description, did ship, and was found by an audit the day after release. The other public failures after 25 September were in the release and review process (P1–P3, P14) or in the studio (W14), not in the mathematics. The sample is small and the window short, so this is an observation, not a measured effect.
 
 ## 6. Discussion
 
@@ -286,6 +285,8 @@ After those dates, almost every recorded manuscript-content error was caught bef
 **Verification needs its own verification.** Twenty incidents concern checks that could not fail or did not exist, or that could be satisfied by stale results. An AI assistant asked to build a verification harness will build one that passes, and a passing harness is not evidence. Mutation testing, negative controls with a specific expected failure reason, and independent reimplementations that never read the original code were the techniques that found these defects.
 
 **In-project AI review works, within limits.** Separate agent sessions told to find errors were the most productive control in the record. They are not outside review. They share the training, blind spots and literature access of the sessions they check. When two checkers verified the same 26 claims, they agreed on only 12, and ten claims were "confirmed" by one and "unverifiable" by the other. Disagreement between AI checkers is information; agreement is not proof.
+
+**The controls that work are the ones that cost the most to run.** The most productive controls were fresh, separate sessions: referee readings, adversarial checkers, and two skeptic sessions per finding. Each fresh session pays a fixed context cost before doing any work. We measured that cost on the same tooling (Claude Code 2.1.286, one-turn sessions). It was about 34,000 tokens with nothing installed and about 65,600 with this project's plugins and connectors. Desktop agent sessions in the author's logs started at about 152,000 tokens. Built-in tool definitions alone were about 31,000 tokens and MCP connectors about 23,000. A finding checked by one referee and two skeptics therefore costs three cold starts before anyone reads a line. Usage limits then bear directly on integrity. In this record, verification was stopped "to save usage", leaving 179 of 236 claims unverified (P6), and another session paused "for the owner's usage reset". The measurements are documented in [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400), and the breakdown in [anthropics/claude-code#80527](https://github.com/anthropics/claude-code/issues/80527).
 
 **Controls erode under release pressure.** The hh-pulse case (P1) shows a gate that worked, a release that went ahead regardless, and a tool change hours later that stopped the gate from failing. Controls that can be edited by the same process they constrain need a record of every relaxation.
 
@@ -305,18 +306,19 @@ After those dates, almost every recorded manuscript-content error was caught bef
 These follow from the incidents and are framed as requests. Several are filed on the Claude Code issue tracker.
 
 1. **Provenance in search results.** Web-search summaries should separate what a page says from what the summarizer infers, and every assertion of existence should carry a URL. Filed as [anthropics/claude-code#99385](https://github.com/anthropics/claude-code/issues/99385).
-2. **Report unreachable sources as a result.** When a fetch is blocked by policy, the tool output should say so in a form the model cannot mistake for an empty result.
+2. **Report unreachable sources as a result.** When a fetch is blocked by policy, the tool output should say so in a form the model cannot mistake for an empty result. The record of unreachable sources should also carry through summaries and subagent reports, so that "nothing found" always arrives with "and these sources could not be opened". Filed as [anthropics/claude-code#99389](https://github.com/anthropics/claude-code/issues/99389).
 3. **Research network presets.** Sandboxed cloud sessions should offer a scholarly allowlist (arXiv, DOI resolvers, major publishers, Crossref, OpenAlex, Semantic Scholar) as a one-click option.
 4. **Visible and reservable search budgets.** The session's search budget should be visible, and a verification stage should be able to reserve part of it. See [anthropics/claude-code#91723](https://github.com/anthropics/claude-code/issues/91723).
 5. **First-class adversarial verification.** A built-in verify step should run independent checkers, mutation tests and negative controls, and report what it could not check as unverified rather than refuted.
 6. **Respect project identity and policy.** Harness hooks should not instruct the agent against a repository's written rules, for example rewriting commit authorship. See [anthropics/claude-code#69201](https://github.com/anthropics/claude-code/issues/69201).
 7. **Durable work in ephemeral sandboxes.** Background results in cloud sessions should persist, or the user should be warned before a container is reclaimed.
+8. **Cheaper fresh sessions for verification.** Because adversarial review multiplies cold starts, independent checkers should be able to run with a minimal tool set by default. Usage-limit pressure should never be what decides whether a verification stage runs. Scheduled jobs that only run a script should not start a model session at all; this is filed as [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400).
 
 ## 8. Limitations
 
 - **Single case, short window.** One workspace, one owner and twelve days of git history (22 September to 3 October). The incidence of each class will differ elsewhere.
 - **Recorded incidents only.** The study sees only errors the workspace recorded finding. Undetected errors are by definition absent, so the counts are a lower bound, and the share caught by each control is a share of what was caught at all.
-- **The record was written largely by AI sessions**, and the evidence base was compiled by an AI agent. The quotations were checked mechanically against the source, but the selection and coding of incidents was not independently replicated.
+- **The record was written largely by AI sessions**, and the evidence base was compiled by an AI agent. The quotations were checked mechanically against the source, and the classification was checked by a second coder (Section 3), but the selection of incidents was not independently replicated.
 - **Attribution.** Commit trailers show which tool session committed work, not which model wrote any sentence. No incident here should be read as a finding about a specific model.
 - **Pre-history.** Events before 22 September are dated only by the notes that record them.
 - **Coding judgment.** An independent second coder agreed on the class of 74 of 80 incidents (κ = 0.91), but that coder was also an AI model, and the detecting control and reach of each incident were coded only once. Several are marked uncertain in the appendix.
@@ -330,7 +332,7 @@ Over two weeks of recorded history, AI-assisted research in GENChase produced 80
 
 ## Data availability
 
-All evidence is in the public repository [ChaseHendrick/GENChase](https://github.com/ChaseHendrick/GENChase). The incident dataset (`incidents.csv`: 80 rows with class, the second coder's class, date, verbatim evidence, detecting control and reach) is published with this paper. File and line references in this paper refer to commit `98e7fc4` (3 October 2026); a reference `path:N` can be opened as `https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/path#LN`. The controls described in Section 5.2 are packaged as a Claude skill at [ChaseHendrick/Research-Integrity](https://github.com/ChaseHendrick/Research-Integrity).
+All evidence is in the public repository [ChaseHendrick/GENChase](https://github.com/ChaseHendrick/GENChase). The incident dataset (`incidents.csv`: 80 rows with class, the second coder's class, date, verbatim evidence, detecting control and reach) is published with this paper. File and line references in this paper refer to commit `98e7fc4` (3 October 2026); a reference `path:N` can be opened as `https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/path#LN`. The controls described in Section 5.2 are packaged as a Claude skill at [ChaseHendrick/Research-Integrity](https://github.com/ChaseHendrick/Research-Integrity). The session-overhead measurements in Section 6 are documented with their exact commands in [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400).
 
 ## Use of AI
 
