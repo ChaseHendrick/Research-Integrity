@@ -8,24 +8,25 @@ description: >
   (proved, computer-assisted, cited, numerical, or conjectured). Searches record
   what did not load. Novelty is never inferred from a search or a check that
   passed. A cited theorem is applied only with its hypotheses checked. A public
-  number is copied from the run that produced it, and a committed program fails
-  if the prose disagrees. A check must be able to fail for the reason it tests.
-  Reviews are adversarial and labelled as in-project. A release gate is a
-  program, not a box the drafting session can tick, and it is not relaxed to
-  fit a release. Skip casual questions and code that makes no scientific or
-  factual claim.
+  number is copied from the run that produced it. A check must be able to fail
+  for the reason it tests. Reviews are adversarial and labelled as in-project.
+  A release gate that already exists is not relaxed to fit a release. Beating a
+  checklist with a program is optional, and only when someone asks for it.
+  Skip casual questions and code that makes no scientific or factual claim.
 license: Apache-2.0
 ---
 
 # Research integrity
 
-Release: 1.2.0
+Release: 1.3.0
 
 ## Goal
 
-Beat a checklist. The seven-item bar this skill comes from could be ticked by the session that had failed it, and it was then edited so an archived paper no longer failed. The standard here is a committed program that recomputes every public count from the file that produced it, exits non-zero if the prose disagrees, and rejects a planted fault. This repository is held to that standard by `scripts/gate.py`. The text below is what the assistant follows. The program is what a release has to pass.
+Keep every claim inside its evidence. Rules 1–7 are the skill, and they are on every time it is used.
 
-Not claimed. The skill does not open sources the assistant cannot reach. An in-project review is not peer review. Nothing here measures whether the rules reduce errors. The gate checks sentences in this repository. It does not check a proof.
+Beating a checklist is optional. Apply section 8 only when the user asks for it, or when the project already has a release gate the user chose to keep. This repository asked for it: `scripts/gate.py`. A project that did not ask is not a failed release. Do not add a program they did not ask for, and do not talk them into turning it on.
+
+Not claimed. The skill does not open sources the assistant cannot reach. An in-project review is not peer review. Nothing here measures whether the rules reduce errors.
 
 These rules come from a documented record of 80 failures in two weeks of
 AI-assisted mathematical research (nine preprints). Most failures were not
@@ -33,7 +34,7 @@ inventions. They were **claims that outran their evidence**: a search that could
 not reach the journals read as proof of novelty, a check that could not fail
 reported as passed, an abstract read as if it were the paper, a number taken from
 a mislabeled metric. Each looked reasonable and none announced itself. Rules 1–7
-are the controls that caught them. Rule 8 is the control those seven still lacked.
+are the controls that caught them. Section 8 is optional. It is not one of those controls.
 
 If a search, a check, or a review is cut short, say so in the first sentence.
 Do not let a summary turn an unfinished step into a finished one.
@@ -201,13 +202,16 @@ A check that cannot miss is not a check. For each verification:
   it unblocked. Make that change before the release, not in order to unblock it.
 - After release, download the archive and confirm it contains the manuscript,
   the programs, and the data the notes name. A changelog heading is not evidence.
-  Run the gate on that download. A green check on the branch is not the archive.
+  If the project has no program gate, do not invent one. If it has one, do not
+  edit it so this release passes. A green check on the branch is not the archive.
 
-## 8. The gate is a program
+## 8. Optional: beat a checklist
 
-A checklist the drafting session can tick is not a gate.
+Off unless the user asks, or the project already has a gate they chose to keep. When it is off, skip this section. A checklist the user is willing to tick is allowed.
 
-- Before a preprint, release, or tag, a committed program recomputes every public count from the file that produced it and exits non-zero if the prose disagrees.
+When it is on:
+
+- A committed program recomputes every public count from the file that produced it and exits non-zero if the prose disagrees.
 - The same program must reject a planted fault: a wrong count, or a version string that does not match. Record that the fault failed and that the clean tree passed. A program that has not been shown to fail is not a gate.
 - Do not change the program so this release passes. If the program is wrong, fix it first, and name the fault it previously missed.
 - The archive that is tagged is the archive that was checked. Build it from the same commit, then download the published file and compare it to that build.
@@ -233,7 +237,7 @@ A checklist the drafting session can tick is not a gate.
       by someone other than the drafting session.
 - [ ] **Reproducible** from a fresh checkout with pinned versions.
 - [ ] **Archive checked** by downloading it. It contains what the notes name.
-- [ ] **Gate is a program.** Public counts were recomputed from their files. A planted fault made the program fail. The downloaded archive matches the build that passed.
+- [ ] **Program gate, only if section 8 is on.** Public counts were recomputed from their files. A planted fault made the program fail. The downloaded archive matches the build that passed. If section 8 is off, leave this unticked and do not treat that as a failure.
 
 ## Phrases to avoid, and what to write instead
 
@@ -247,4 +251,4 @@ A checklist the drafting session can tick is not a gate.
 | "Computed" (for a proof) | "`computer-assisted`: decided by `script.py`, which fails on <control>." |
 | "Holds in general" | "Proved on <the set that was proved>." |
 | "Does not replicate" (weak test) | State the test, its power, and the result. |
-| "The checklist passed" | "Checked by `gate.py`, which fails when the stated count is wrong." |
+| "The checklist passed" (only if section 8 is on) | "Checked by the project's gate, which fails when the stated count is wrong." |

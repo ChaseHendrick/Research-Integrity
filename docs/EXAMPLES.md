@@ -85,6 +85,8 @@ In the real case, the result was in both of those papers.
 
 ## A gate
 
+This example is only for a project that asked to beat a checklist. If nobody asked, do not write the program.
+
 **Before**
 
 > The manuscript says 151 commits. I counted roughly that. Checklist item "numbers copied from the run" is ticked. Releasing.

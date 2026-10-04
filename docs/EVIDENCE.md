@@ -60,7 +60,7 @@ A verification figure of 6 × 10⁻²⁵ shipped in a release; it "came from a m
 
 **What happened.** The quality bar in GENChase was a checklist. A paper was archived while two items were still open, and the checker was then changed so an archived paper reported them instead of failing (case-study P1). A quality item was ticked before the reading it certified existed (V12). In this repository, case study version 1.8 stated 151 commits and a history starting on 22 September. `git rev-list --count` at the cited commit `98e7fc4`, run on 4 October 2026, is 315, and the first commit is dated 17 September. No program failed that sentence.
 
-**What changed.** Rule 8. [`scripts/gate.py`](../scripts/gate.py) reads [`incidents.csv`](case-study/incidents.csv) and fails if the skill or the README states a different count. It fails if the plugin manifest, the citation file, the changelog heading, the skill's release line, and the case study disagree about the version. A planted count of 79, and a planted version mismatch, must each make it fail. The downloadable zip is built from `SKILL.md` in the same run. This rule was not a control during the study window.
+**What changed.** Release 1.2.0 added the program gate. Release 1.3.0 makes it optional: off unless someone asks, or the project already has a gate they chose. This repository asked, so [`scripts/gate.py`](../scripts/gate.py) still reads [`incidents.csv`](case-study/incidents.csv) and fails if the skill or the README states a different count. A planted count of 79, and a planted version mismatch, must each make it fail. The downloadable zip is built from `SKILL.md` in the same run. The optional rule was not a control during the study window.
 
 ## The full record
 

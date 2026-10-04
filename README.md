@@ -18,9 +18,9 @@ AI research assistants rarely fail by inventing things from nothing. They fail b
 
 Each looks reasonable, and none announces itself.
 
-This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.10.
+This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.11.
 
-The skill you install is plain instructions: no scripts, no network access, no API key. This repository's own release is held to a stricter bar. [`scripts/gate.py`](scripts/gate.py) recomputes the incident count from [`incidents.csv`](docs/case-study/incidents.csv) and fails if the skill or this page states a different one. A planted wrong count and a planted version mismatch must each make it fail. It also builds the downloadable zip.
+The skill you install is plain instructions: no scripts, no network access, no API key. Beating a checklist is optional and off unless you ask. This repository asked: [`scripts/gate.py`](scripts/gate.py) recomputes the incident count from [`incidents.csv`](docs/case-study/incidents.csv) and fails if the skill or this page states a different one. A planted wrong count and a planted version mismatch must each make it fail. It also builds the downloadable zip.
 
 ## Install
 
@@ -89,7 +89,7 @@ The same situation, in two columns. The right-hand column is what the skill is f
     <tr>
       <td>A release gate fails</td>
       <td>The gate is changed so the release passes.</td>
-      <td>The release waits. The gate is a program, and a planted fault must make it fail.</td>
+      <td>The release waits. A gate you already have is not edited so this release passes. A program that recomputes the counts is optional.</td>
     </tr>
   </tbody>
 </table>
@@ -105,9 +105,9 @@ The same situation, in two columns. The right-hand column is what the skill is f
 5. **Review adversarially, then doubt the reviewer.** The drafting session never checks its own fixes.
 6. **Label review honestly.** An AI reading is not peer review.
 7. **Do not bend a gate to fit a release.**
-8. **The gate is a program.** It recomputes public counts from their files and fails on a planted fault.
+8. **Optional: beat a checklist.** Off unless you ask. When it is on, a program recomputes public counts and fails on a planted fault.
 
-The full text, with a pre-release checklist and a table of phrases to avoid, is in [`SKILL.md`](plugins/research-integrity/skills/research-integrity/SKILL.md). The goal is at the top of that file: beat a checklist, and hold this repository to the same rule.
+The full text, with a pre-release checklist and a table of phrases to avoid, is in [`SKILL.md`](plugins/research-integrity/skills/research-integrity/SKILL.md). Rules 1–7 are always on. This repository opted into rule 8.
 
 ## Where the rules come from
 
@@ -128,7 +128,7 @@ In-project AI review was the control that caught the most: separate sessions tol
 
 ![Figure 1 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
 
-- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.10. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what the skill added after the study window. The current skill release is 1.2.0.
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.11. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what the skill added after the study window. The current skill release is 1.3.0.
 - **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
 - **[See the evidence for each rule](docs/EVIDENCE.md)**.
 

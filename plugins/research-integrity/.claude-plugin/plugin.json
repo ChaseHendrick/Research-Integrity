@@ -1,7 +1,7 @@
 {
   "name": "research-integrity",
   "displayName": "Research integrity",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Keeps a research claim inside the evidence that supports it. Labels how each claim is known, records sources that did not load, and requires a check that can fail. Instructions only: it sends nothing and fetches nothing.",
   "author": {
     "name": "Chase Hendrick",

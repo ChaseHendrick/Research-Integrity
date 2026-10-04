@@ -134,8 +134,8 @@ def main():
         case_release(CASE.read_text()),
     ])
     changelog_release(CHANGELOG.read_text(), version)
-    if "## 8. The gate is a program" not in skill or "## Goal" not in skill:
-        raise GateError("SKILL.md is missing the goal or rule 8")
+    if "## 8. Optional: beat a checklist" not in skill or "## Goal" not in skill:
+        raise GateError("SKILL.md is missing the goal or the optional checklist section")
     build_zip(skill, ZIP_PATH)
     print(f"OK: gate passed for {version}, {n} incidents, zip {ZIP_PATH.relative_to(ROOT)}")
     print("Failure control: planted count 79 failed; planted version mismatch failed.")
