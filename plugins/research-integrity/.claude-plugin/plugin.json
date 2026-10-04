@@ -1,11 +1,10 @@
 {
   "name": "research-integrity",
   "displayName": "Research integrity",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Keeps a research claim inside the evidence that supports it. On Claude Code, a local checker warns on a few overclaim phrases and can copy a number from a file in the project. It sends nothing and fetches nothing. Chat gets the instructions only.",
   "author": {
-    "name": "Chase Hendrick",
-    "url": "https://github.com/ChaseHendrick"
+    "name": "Chase Hendrick"
   },
   "homepage": "https://github.com/ChaseHendrick/Research-Integrity",
   "repository": "https://github.com/ChaseHendrick/Research-Integrity",

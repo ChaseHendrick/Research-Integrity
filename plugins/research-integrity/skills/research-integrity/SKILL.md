@@ -18,7 +18,7 @@ license: Apache-2.0
 
 # Research integrity
 
-Release: 1.4.1
+Release: 1.4.2
 
 ## Goal
 

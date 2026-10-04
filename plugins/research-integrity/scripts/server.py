@@ -77,7 +77,7 @@ def _csv_field(raw, field, row):
         raise ValueError(f"{field} is not a CSV column")
     if row is None:
         if len(rows) != 1:
-            raise ValueError(f"column {field} has {len(rows)} rows; pass row")
+            raise ValueError(f"column {field} has {len(rows)} rows; name the row index")
         row = 0
     row = int(row)
     if row < 0 or row >= len(rows):
@@ -245,11 +245,12 @@ def self_test():
     clean = call_tool("scan_text", {"text": "Searches of X found no earlier statement.\n"})
     if clean["hits"]:
         raise SystemExit("FAIL scan_text flagged a bounded sentence")
+    empty_refused = False
     try:
         call_tool("append_search", {"query": "  ", "opened": "", "blocked": "", "stopped": "", "conclusion": ""})
     except ValueError:
-        pass
-    else:
+        empty_refused = True
+    if not empty_refused:
         raise SystemExit("FAIL empty query was written")
     with tempfile.TemporaryDirectory() as tmp:
         previous = Path.cwd()
@@ -257,22 +258,24 @@ def self_test():
         outside = Path(tempfile.gettempdir()) / "ri-outside-field.txt"
         outside.write_text("marker=1\n", encoding="utf-8")
         try:
+            outside_refused = False
             try:
                 read_field(str(outside), "marker", None)
             except ValueError:
-                pass
-            else:
+                outside_refused = True
+            if not outside_refused:
                 raise SystemExit("FAIL read_field followed a path outside the project")
             sample = Path(tmp) / "run.json"
             sample.write_text('{"agreement": "4.5e-21", "other": "6e-25"}\n', encoding="utf-8")
             copied = read_field("run.json", "agreement", None)
             if copied != "4.5e-21":
                 raise SystemExit(f"FAIL read_field copied {copied!r}")
+            missing_refused = False
             try:
                 read_field("run.json", "missing", None)
             except ValueError:
-                pass
-            else:
+                missing_refused = True
+            if not missing_refused:
                 raise SystemExit("FAIL missing field returned a value")
         finally:
             os.chdir(previous)

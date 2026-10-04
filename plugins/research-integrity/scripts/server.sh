@@ -1,4 +1,2 @@
 #!/bin/sh
-# Starts the local server. No network.
-dir=${0%/*}
-exec python3 "$dir/server.py"
+exec python3 "${CLAUDE_PLUGIN_ROOT}/scripts/server.py"
