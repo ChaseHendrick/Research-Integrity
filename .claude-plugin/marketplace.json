@@ -1,0 +1,15 @@
+{
+  "name": "research-integrity",
+  "description": "Controls for AI-assisted research: provenance labels, adversarial verification, novelty audits and checks that can fail.",
+  "owner": {
+    "name": "Chase Hendrick",
+    "url": "https://github.com/ChaseHendrick"
+  },
+  "plugins": [
+    {
+      "name": "research-integrity",
+      "source": "./plugins/research-integrity",
+      "description": "Keeps an AI research assistant from overclaiming: every claim carries its provenance, absence is never inferred from pages that did not load, verification is adversarial and must be able to fail, and novelty is audited before it is asserted."
+    }
+  ]
+}
