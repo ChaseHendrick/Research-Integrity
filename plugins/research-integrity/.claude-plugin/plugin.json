@@ -1,7 +1,8 @@
 {
   "name": "research-integrity",
+  "displayName": "Research integrity",
   "version": "1.2.0",
-  "description": "Controls for AI-assisted research, derived from a documented record of 80 failures. A release gate is a program that recomputes public counts and fails on a planted fault.",
+  "description": "Keeps a research claim inside the evidence that supports it. Labels how each claim is known, records sources that did not load, and requires a check that can fail. Instructions only: it sends nothing and fetches nothing.",
   "author": {
     "name": "Chase Hendrick",
     "url": "https://github.com/ChaseHendrick"
