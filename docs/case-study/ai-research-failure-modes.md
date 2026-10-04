@@ -4,7 +4,7 @@
 
 Chase Hendrick · Hendrick Research · ORCID [0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Version 1.5 · 4 October 2026 · Case study, not peer reviewed
+Version 1.6 · 4 October 2026 · Case study, not peer reviewed
 
 ---
 
@@ -222,16 +222,18 @@ Other process incidents:
 | Control | Incidents detected |
 |---|---:|
 | Separate-agent referee reading (REF) | 28 |
+| The working session itself (SELF) | 16 |
 | Adversarial verification workflow (AVW) | 11 |
-| The working session itself (SELF) | 8 |
 | Full reading of a source (REV) | 6 |
 | Literature or novelty audit (AUD) | 6 |
 | Owner (OWN) | 4 |
-| Re-run or download check (RUN) | 2 |
+| Re-run or download check (RUN) | 3 |
+| This study | 3 |
 | Independent re-derivation (IND) | 2 |
 | CI | 2 |
-| Other (cross-assistant review; this study) | 2 |
-| Not stated, not recorded or not detected | 11 |
+| Cross-assistant review | 1 |
+
+Sorted by how many incidents each control caught. Eleven incidents had no control named in the first coding. Version 1.6 assigns each from the record that holds the correction: the working session's ledger (N5, W1, W5, W6, W7, W14, V16, V17), the repair of release 0.8.0 (P2), and this study's check of the git history (P4, P5). Class and reach are unchanged.
 
 **In-project AI review, from referee readings and adversarial workflows, detected 39 of 80 incidents (49%).** Referee notes typically open with a disclaimer such as: "An in-project reading by a separate AI agent (a headless Claude session started for it) … It is not an outside review."
 
@@ -321,7 +323,7 @@ These follow from the incidents and are framed as requests. Several are filed on
 - **The record was written largely by AI sessions**, and the evidence base was compiled by an AI agent. The quotations were checked mechanically against the source, and the classification was checked by a second coder (Section 3), but the selection of incidents was not independently replicated.
 - **Attribution.** Commit trailers show which tool session committed work, not which model wrote any sentence. No incident here should be read as a finding about a specific model.
 - **Pre-history.** Events before 22 September are dated only by the notes that record them.
-- **Coding judgment.** An independent second coder agreed on the class of 74 of 80 incidents (κ = 0.91), but that coder was also an AI model, and the detecting control and reach of each incident were coded only once. Several are marked uncertain in the appendix.
+- **Coding judgment.** An independent second coder agreed on the class of 74 of 80 incidents (κ = 0.91), but that coder was also an AI model, and the detecting control and reach of each incident were coded only once. Version 1.6 fills the eleven controls that coding had left unnamed, from the record of the correction; class and reach were not changed. Several are marked uncertain in the appendix.
 - **Dates.** Most incidents are dated by when they were recorded rather than when the error was made, which shifts some early errors to later dates (Figure 1).
 
 ## 9. Conclusion
@@ -369,7 +371,7 @@ Reach: **P** reached public · **?** uncertain · **C** caught before release or
 | N2 | Five identities presented as first-public; audit found zero novel | AUD | P |
 | N3 | Personal name given to a classical result | OWN | P |
 | N4 | Priority wording left in a fingerprinted statements file | REF | P |
-| N5 | Published equations given private names in draft | not stated | C |
+| N5 | Published equations given private names in draft | SELF | C |
 | N6 | Rank-window central point anticipated and uncited | REF | C |
 | N7 | hh-dynamics novelty statement overreached | REF | C |
 | N8 | Double-pendulum novelty rested on search snippets | REF | C |
@@ -392,20 +394,20 @@ Reach: **P** reached public · **?** uncertain · **C** caught before release or
 | L16 | Smale–Birkhoff theorem misrepresented; ratio misquoted | REF | C |
 | L17 | A slip misattributed; theorem credited only to a secondary source | REF | C |
 | L18 | Cardiac-rings manuscript cited a reading that did not exist | REF | C |
-| W1 | Agreement 6 × 10⁻²⁵ from a mislabeled metric (true 4.5 × 10⁻²¹) | not stated | P |
+| W1 | Agreement 6 × 10⁻²⁵ from a mislabeled metric (true 4.5 × 10⁻²¹) | SELF | P |
 | W2 | Witness value used a misprinted source formula | IND | ? |
 | W3 | Floor reported on one branch; lower minimum missed | IND | ? |
 | W4 | Six-vortex geometry wrongly declared unable to collapse | REV | ? |
-| W5 | Hessian eigenvalues printed for 2P, not P | not stated | P |
-| W6 | Configuration announced as a collapse actually expands | not stated | P |
-| W7 | Digits rounded instead of truncated | not stated | C |
+| W5 | Hessian eigenvalues printed for 2P, not P | SELF | P |
+| W6 | Configuration announced as a collapse actually expands | SELF | P |
+| W7 | Digits rounded instead of truncated | SELF | C |
 | W8 | Theorem claimed on a larger set than proved | REF | C |
 | W9 | Stale check counts; "two controls" where there are three | REF | C |
 | W10 | Theorem proved at 6.2999999999999998 °C; unsupported bound; numbers not in certificates | REF | C |
 | W11 | "Exact" values rested only on enclosures | REF | C |
 | W12 | "No replication" overstated a weak held-out test | REF | C |
 | W13 | Claims beyond outputs; uncertainty missing from abstract | REF | C |
-| W14 | Studio plates compared with an infinite-size limit | not stated | P |
+| W14 | Studio plates compared with an infinite-size limit | SELF | P |
 | W15 | Studio parameter silently overwritten (every plate at v = 2) | AUD | P |
 | W16 | Print audit overstated its own findings | AVW | C |
 | W17 | Suggestions relayed from another assistant overstated prior work | cross-assistant review | C |
@@ -426,16 +428,16 @@ Reach: **P** reached public · **?** uncertain · **C** caught before release or
 | V13 | Program said to prove a quantity it only encloses | REF | C |
 | V14 | Fix list called two items done that were not | REF | ? |
 | V15 | Status lines printed "Poisson solved" unconditionally | AUD | P |
-| V16 | README agreement values "1 ; 1" with no measurement | not stated | P |
-| V17 | Tautological and preview-hidden checks shipped | not stated | P |
+| V16 | README agreement values "1 ; 1" with no measurement | SELF | P |
+| V17 | Tautological and preview-hidden checks shipped | SELF | P |
 | V18 | Sharpness tool sampled half the pixels and called sharp plates featureless | AUD | P |
 | V19 | Escape helper escaped nothing | CI | P |
 | V20 | Hopf proof step could accept results from an older source version | REF | C |
 | P1 | Paper archived with two quality items open; gate then weakened | RUN, OWN | P |
-| P2 | Release notes said papers were attached; they were not | not stated | P |
+| P2 | Release notes said papers were attached; they were not | RUN | P |
 | P3 | Zenodo archive missing its manuscript PDF | RUN | P |
-| P4 | Invented co-author trailers after a rule against them | not recorded | P |
-| P5 | Scratch folder landed on main despite its own instruction | not detected | ? |
+| P4 | Invented co-author trailers after a rule against them | this study | P |
+| P5 | Scratch folder landed on main despite its own instruction | this study | ? |
 | P6 | Verification stopped to save usage; 179 of 236 claims never checked | SELF | C |
 | P7 | Work existing only in an ephemeral container | SELF | C |
 | P8 | Audit stopped before its verification stage | SELF | C |
