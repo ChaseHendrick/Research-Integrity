@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" font-family="Helvetica,Arial,sans-serif" font-size="11.5">
+<rect width="100%" height="100%" fill="white"/>
+<text x="10" y="20" font-weight="bold" fill="#222">Context carried by one fresh Claude Code session before any work (tokens)</text>
+<text x="242" y="57.0" text-anchor="end" fill="#333">Full setup</text><rect x="250" y="38" width="427.4" height="30" fill="#163f35"/><text x="683.4" y="57.0" fill="#333">65,600</text>
+<text x="242" y="97.0" text-anchor="end" fill="#333">No MCP servers</text><rect x="250" y="78" width="275.8" height="30" fill="#2f7a5f"/><text x="531.8" y="97.0" fill="#333">42,326</text>
+<text x="242" y="137.0" text-anchor="end" fill="#333">Also no skills</text><rect x="250" y="118" width="257.9" height="30" fill="#2f7a5f"/><text x="513.9" y="137.0" fill="#333">39,584</text>
+<text x="242" y="177.0" text-anchor="end" fill="#333">Also no user plugins/settings (bare)</text><rect x="250" y="158" width="222.0" height="30" fill="#2f7a5f"/><text x="478.0" y="177.0" fill="#333">34,068</text>
+<text x="242" y="217.0" text-anchor="end" fill="#333">Bare, no tools</text><rect x="250" y="198" width="18.7" height="30" fill="#8aa79b"/><text x="274.7" y="217.0" fill="#333">2,864</text>
+<text x="10" y="240" fill="#555" font-size="10">Claude Code 2.1.286, Opus 5.5, one-turn claude -p sessions; each row switches one more component off.</text></svg>

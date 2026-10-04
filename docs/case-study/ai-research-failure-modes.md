@@ -4,7 +4,7 @@
 
 Chase Hendrick · Hendrick Research · ORCID [0009-0002-9754-6087](https://orcid.org/0009-0002-9754-6087)
 
-Version 1.4 · 4 October 2026 · Case study, not peer reviewed
+Version 1.5 · 4 October 2026 · Case study, not peer reviewed
 
 ---
 
@@ -286,7 +286,7 @@ After those dates, almost every recorded manuscript-content error was caught bef
 
 **In-project AI review works, within limits.** Separate agent sessions told to find errors were the most productive control in the record. They are not outside review. They share the training, blind spots and literature access of the sessions they check. When two checkers verified the same 26 claims, they agreed on only 12, and ten claims were "confirmed" by one and "unverifiable" by the other. Disagreement between AI checkers is information; agreement is not proof.
 
-**The controls that work are the ones that cost the most to run.** The most productive controls were fresh, separate sessions: referee readings, adversarial checkers, and two skeptic sessions per finding. Each fresh session pays a fixed context cost before doing any work. We measured that cost on the same tooling (Claude Code 2.1.286, one-turn sessions). It was about 34,000 tokens with nothing installed and about 65,600 with this project's plugins and connectors. Desktop agent sessions in the author's logs started at about 152,000 tokens. Built-in tool definitions alone were about 31,000 tokens and MCP connectors about 23,000. A finding checked by one referee and two skeptics therefore costs three cold starts before anyone reads a line. Usage limits then bear directly on integrity. In this record, verification was stopped "to save usage", leaving 179 of 236 claims unverified (P6), and another session paused "for the owner's usage reset". The measurements are documented in [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400), and the breakdown in [anthropics/claude-code#80527](https://github.com/anthropics/claude-code/issues/80527).
+**The controls that work are the ones that cost the most to run.** The most productive controls were fresh, separate sessions: referee readings, adversarial checkers, and two skeptic sessions per finding. Each fresh session pays a fixed context cost before doing any work. We measured that cost on the same tooling (Claude Code 2.1.286, one-turn sessions). It was about 34,000 tokens with nothing installed and about 65,600 with this project's plugins and connectors. Desktop agent sessions in the author's logs started at about 152,000 tokens. Built-in tool definitions alone were about 31,000 tokens and MCP connectors about 23,000. A finding checked by one referee and two skeptics therefore costs three cold starts before anyone reads a line. Usage limits then bear directly on integrity. In this record, verification was stopped "to save usage", leaving 179 of 236 claims unverified (P6), and another session paused "for the owner's usage reset". Appendix B gives the full measurements; they are also documented in [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400), and the breakdown in [anthropics/claude-code#80527](https://github.com/anthropics/claude-code/issues/80527).
 
 **Controls erode under release pressure.** The hh-pulse case (P1) shows a gate that worked, a release that went ahead regardless, and a tool change hours later that stopped the gate from failing. Controls that can be edited by the same process they constrain need a record of every relaxation.
 
@@ -445,3 +445,40 @@ Reach: **P** reached public · **?** uncertain · **C** caught before release or
 | P12 | Handoff misstated commit authorship | this study | C |
 | P13 | AI disclosure in a draft names only one assistant | OWN | C |
 | P14 | Cardiac-rings fixes checked only by the drafting session; last fixes unread by a further reader | SELF | P |
+
+## Appendix B. Session overhead measurements
+
+Section 6 argues that the most effective controls are also the most expensive to run, because each one starts a fresh AI session. This appendix gives the measurements behind that claim. All runs used Claude Code 2.1.286 on macOS, Opus 5.5 unless stated, one-turn `claude -p "Reply with exactly: OK" --output-format json` sessions from an empty folder, with the author's own account and setup.
+
+![Figure 3. Context carried by one fresh session before any work, switching off one component at a time. The full setup is the configuration GENChase work used; the bare configuration has no MCP servers, skills or user plugins.](fig-overhead.svg)
+
+**Table B1. What the fixed context is made of** (differences between the configurations in Figure 3).
+
+| Component | Tokens per fresh session |
+|---|---:|
+| Built-in tool definitions | ~31,200 |
+| MCP servers / connectors | ~23,300 |
+| Plugin configuration | ~5,500 |
+| System prompt and message | ~2,900 |
+| Skills listing | ~2,700 |
+| **Total, full setup** | **~65,600** |
+
+The full-setup baseline was measured twice more, at 65,609 and 65,539 tokens. Desktop agent sessions in the author's logs started at 151,628–162,836 tokens (45 sessions, median 151,794); that composition was not broken down.
+
+**Table B2. One real task**: "Run the shell command `echo ok` with the Bash tool, then reply with only its exit code."
+
+| Configuration | Model requests | Input tokens processed |
+|---|---:|---:|
+| Full setup | 2 | 126,575 |
+| Bare | 2 | 68,281 |
+| Bare, Bash tool only | 3 | 14,345 |
+| Bare, Bash tool only, Haiku 4.5 | 2 | 21,637 |
+
+**Observations.**
+
+- **Most of the cost of a short run is the cold start.** From the costs the CLI reported, writing context to the prompt cache cost about 40 times as much per token as reading it back on a later turn ($8.00 versus $0.20 per million tokens on Opus 5.5). A fresh bare session therefore costs about $0.28 before any work, and a fresh full-setup session about $0.52.
+- **The cache outlived a 6-minute-40-second gap**: 30,290 of 34,067 tokens were read back. About 3,800 tokens were re-written on every run regardless.
+- **Haiku is cheaper per token, not smaller.** A bare Haiku session carried 35,150 tokens against 34,065 for Opus.
+- **A session can silently start without its connectors.** The first run after login measured 43,240 tokens, within about 900 of the no-MCP configuration, against ~65,600 for every later run (Section 6).
+
+These numbers come from one machine and one account, and the costs are the client's own estimates, not invoices. The exact commands are in [anthropics/claude-code#99400](https://github.com/anthropics/claude-code/issues/99400).
