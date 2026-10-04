@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added the case study *Eighty Failures* (Markdown and PDF), its two figures and the 80-incident dataset under [docs/case-study/](docs/case-study/), and linked them from the README and the evidence page.
+
 ## 1.0.0 (2026-10-04)
 
 First release.

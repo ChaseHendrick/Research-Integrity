@@ -58,4 +58,4 @@ A verification figure of 6 × 10⁻²⁵ shipped in a release; it "came from a m
 
 ## The full record
 
-The case study *Eighty Failures: Error Modes and Controls in AI-Assisted Mathematical Research* (Hendrick, 2026) documents all 80 incidents. Each one has its class, date, commit, detecting control and whether it reached a public release.
+The case study [*Eighty Failures: Error Modes and Controls in AI-Assisted Mathematical Research*](case-study/ai-research-failure-modes.md) ([PDF](case-study/ai-research-failure-modes.pdf)) documents all 80 incidents. The [incident dataset](case-study/incidents.csv) has them as a CSV. Each one has its class, date, commit, detecting control and whether it reached a public release.

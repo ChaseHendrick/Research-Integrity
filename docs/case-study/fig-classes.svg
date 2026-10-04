@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 300" font-family="Helvetica,Arial,sans-serif" font-size="11">
+<rect width="100%" height="100%" fill="white"/>
+<text x="10" y="18" font-weight="bold" fill="#222">A. Incidents by class and reach</text>
+<text x="162" y="63.0" text-anchor="end" fill="#333">Unsupported novelty</text>
+<rect x="170" y="44" width="34.0" height="30" fill="#c0503a"/>
+<text x="187.0" y="63.0" text-anchor="middle" fill="white" font-size="10">4</text>
+<rect x="204.0" y="44" width="42.5" height="30" fill="#2f7a5f"/>
+<text x="225.25" y="63.0" text-anchor="middle" fill="white" font-size="10">5</text>
+<text x="251.5" y="63.0" fill="#333">9</text>
+<text x="162" y="105.0" text-anchor="end" fill="#333">Literature misuse</text>
+<rect x="170" y="86" width="17.0" height="30" fill="#c0503a"/>
+<text x="178.5" y="105.0" text-anchor="middle" fill="white" font-size="10">2</text>
+<rect x="187.0" y="86" width="25.5" height="30" fill="#e3b341"/>
+<text x="199.75" y="105.0" text-anchor="middle" fill="white" font-size="10">3</text>
+<rect x="212.5" y="86" width="110.5" height="30" fill="#2f7a5f"/>
+<text x="267.75" y="105.0" text-anchor="middle" fill="white" font-size="10">13</text>
+<text x="328.0" y="105.0" fill="#333">18</text>
+<text x="162" y="147.0" text-anchor="end" fill="#333">Wrong numbers / overstated</text>
+<rect x="170" y="128" width="51.0" height="30" fill="#c0503a"/>
+<text x="195.5" y="147.0" text-anchor="middle" fill="white" font-size="10">6</text>
+<rect x="221.0" y="128" width="25.5" height="30" fill="#e3b341"/>
+<text x="233.75" y="147.0" text-anchor="middle" fill="white" font-size="10">3</text>
+<rect x="246.5" y="128" width="85.0" height="30" fill="#2f7a5f"/>
+<text x="289.0" y="147.0" text-anchor="middle" fill="white" font-size="10">10</text>
+<text x="336.5" y="147.0" fill="#333">19</text>
+<text x="162" y="189.0" text-anchor="end" fill="#333">Verification could not fail</text>
+<rect x="170" y="170" width="42.5" height="30" fill="#c0503a"/>
+<text x="191.25" y="189.0" text-anchor="middle" fill="white" font-size="10">5</text>
+<rect x="212.5" y="170" width="8.5" height="30" fill="#e3b341"/>
+<rect x="221.0" y="170" width="119.0" height="30" fill="#2f7a5f"/>
+<text x="280.5" y="189.0" text-anchor="middle" fill="white" font-size="10">14</text>
+<text x="345.0" y="189.0" fill="#333">20</text>
+<text x="162" y="231.0" text-anchor="end" fill="#333">Process and tooling</text>
+<rect x="170" y="212" width="42.5" height="30" fill="#c0503a"/>
+<text x="191.25" y="231.0" text-anchor="middle" fill="white" font-size="10">5</text>
+<rect x="212.5" y="212" width="8.5" height="30" fill="#e3b341"/>
+<rect x="221.0" y="212" width="68.0" height="30" fill="#2f7a5f"/>
+<text x="255.0" y="231.0" text-anchor="middle" fill="white" font-size="10">8</text>
+<text x="294.0" y="231.0" fill="#333">14</text>
+<rect x="20" y="276" width="10" height="10" fill="#c0503a"/><text x="34" y="285" fill="#333">Reached public</text>
+<rect x="132" y="276" width="10" height="10" fill="#e3b341"/><text x="146" y="285" fill="#333">Uncertain</text>
+<rect x="244" y="276" width="10" height="10" fill="#2f7a5f"/><text x="258" y="285" fill="#333">Caught / internal</text>
+<text x="410" y="18" font-weight="bold" fill="#222">B. What caught them (detections)</text>
+<text x="552" y="54" text-anchor="end" fill="#333">AI referee reading</text><rect x="560" y="40" width="173.6" height="20" fill="#163f35"/><text x="738.6" y="54" fill="#333">28</text>
+<text x="552" y="83" text-anchor="end" fill="#333">Adversarial verification</text><rect x="560" y="69" width="68.2" height="20" fill="#163f35"/><text x="633.2" y="83" fill="#333">11</text>
+<text x="552" y="112" text-anchor="end" fill="#333">Working session itself</text><rect x="560" y="98" width="49.6" height="20" fill="#8aa79b"/><text x="614.6" y="112" fill="#333">8</text>
+<text x="552" y="141" text-anchor="end" fill="#333">Full source reading</text><rect x="560" y="127" width="37.2" height="20" fill="#8aa79b"/><text x="602.2" y="141" fill="#333">6</text>
+<text x="552" y="170" text-anchor="end" fill="#333">Literature / novelty audit</text><rect x="560" y="156" width="37.2" height="20" fill="#8aa79b"/><text x="602.2" y="170" fill="#333">6</text>
+<text x="552" y="199" text-anchor="end" fill="#333">Owner</text><rect x="560" y="185" width="24.8" height="20" fill="#8aa79b"/><text x="589.8" y="199" fill="#333">4</text>
+<text x="552" y="228" text-anchor="end" fill="#333">Other (re-run, CI, re-derivation…)</text><rect x="560" y="214" width="49.6" height="20" fill="#8aa79b"/><text x="614.6" y="228" fill="#333">8</text>
+<text x="552" y="257" text-anchor="end" fill="#333">Not stated or not detected</text><rect x="560" y="243" width="68.2" height="20" fill="#8aa79b"/><text x="633.2" y="257" fill="#333">11</text>
+<text x="410" y="285" fill="#555" font-size="10">Dark: in-project AI review, 39 of 80 incidents (49%)</text></svg>

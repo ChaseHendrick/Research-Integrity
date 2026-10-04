@@ -18,7 +18,7 @@ AI research assistants rarely fail by inventing things from nothing. They fail b
 
 Each looks reasonable, and none announces itself.
 
-This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. See [where the rules come from](docs/EVIDENCE.md).
+This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)).
 
 It is plain instructions: no scripts, no network access, no API key.
 
@@ -84,7 +84,13 @@ The rules were written after the failures happened, not before. They come from [
 
 The worst single failure: five results were announced as "the first public source of these formulas". The supporting search could not open most journals. An audit later found the results in papers from 1877 and 1987, and **zero** of the five were new.
 
-In-project AI review was the control that caught the most: separate sessions told to find errors caught 39 of the 80 incidents (49%). [Read the evidence for each rule →](docs/EVIDENCE.md)
+In-project AI review was the control that caught the most: separate sessions told to find errors caught 39 of the 80 incidents (49%).
+
+![Figure 2 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
+
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), 17 pages, with related work, an independent coding check (κ = 0.91) and two figures.
+- **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
+- **[See the evidence for each rule](docs/EVIDENCE.md)**.
 
 ## Coverage and limits
 
