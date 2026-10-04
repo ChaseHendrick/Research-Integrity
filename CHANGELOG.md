@@ -13,6 +13,10 @@
 - Case study v1.3: a new discussion section on the cost of the controls (measured session overhead and how usage limits cut verification short), links to the issues filed from it, and consistency fixes.
 - Added the case study *Eighty Failures* (Markdown and PDF), its two figures and the 80-incident dataset under [docs/case-study/](docs/case-study/), and linked them from the README and the evidence page.
 
+## 1.4.1 (2026-10-04)
+
+- Directory validation. The hook and the server are started from shell scripts under the plugin path. Neither reads the process environment. A square PNG icon is at `.claude-plugin/icon.png`. The Python files those scripts start may still be held for a person to read.
+
 ## 1.4.0 (2026-10-04)
 
 - A local MCP server and a Write/Edit hook, both stdlib Python, no network. The hook warns by default and blocks only when the project sets `"block": true`. Claude Chat does not run either.

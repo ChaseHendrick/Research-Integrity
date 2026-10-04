@@ -6,7 +6,6 @@ Blocks only if the project file .research-integrity.json says {"block": true}.
 No network. A missing or unreadable config does not block.
 """
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -16,11 +15,7 @@ MAX_CHARS = 200_000
 
 
 def project_blocks(file_path):
-    roots = []
-    env = os.environ.get("CLAUDE_PROJECT_DIR")
-    if env:
-        roots.append(Path(env))
-    roots.append(Path.cwd())
+    roots = [Path.cwd()]
     if file_path:
         roots.append(Path(file_path).resolve().parent)
     seen = set()
@@ -58,11 +53,11 @@ def proposed_text(tool_input):
 
 
 def inside_plugin(path):
-    root = os.environ.get("CLAUDE_PLUGIN_ROOT")
-    if not root or not path:
+    if not path:
         return False
+    root = Path(__file__).resolve().parents[1]
     try:
-        Path(path).resolve().relative_to(Path(root).resolve())
+        Path(path).resolve().relative_to(root)
         return True
     except ValueError:
         return False

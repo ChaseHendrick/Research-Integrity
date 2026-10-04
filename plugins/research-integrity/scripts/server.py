@@ -17,8 +17,7 @@ MAX_FILE = 1_000_000
 
 
 def project_root():
-    env = os.environ.get("CLAUDE_PROJECT_DIR")
-    return Path(env).resolve() if env else Path.cwd().resolve()
+    return Path.cwd().resolve()
 
 
 def inside_project(path):
@@ -200,7 +199,7 @@ def handle(message):
         return result(message_id, {
             "protocolVersion": version,
             "capabilities": {"tools": {}},
-            "serverInfo": {"name": "research-integrity", "version": "1.4.0"},
+            "serverInfo": {"name": "research-integrity", "version": "1.4.1"},
         })
     if method and method.startswith("notifications/"):
         return None
@@ -253,12 +252,13 @@ def self_test():
     else:
         raise SystemExit("FAIL empty query was written")
     with tempfile.TemporaryDirectory() as tmp:
-        os.environ["CLAUDE_PROJECT_DIR"] = tmp
+        previous = Path.cwd()
+        os.chdir(tmp)
         outside = Path(tempfile.gettempdir()) / "ri-outside-field.txt"
-        outside.write_text("secret=1\n", encoding="utf-8")
+        outside.write_text("marker=1\n", encoding="utf-8")
         try:
             try:
-                read_field(str(outside), "secret", None)
+                read_field(str(outside), "marker", None)
             except ValueError:
                 pass
             else:
@@ -275,6 +275,7 @@ def self_test():
             else:
                 raise SystemExit("FAIL missing field returned a value")
         finally:
+            os.chdir(previous)
             outside.unlink(missing_ok=True)
     init = handle({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}})
     if init["result"]["serverInfo"]["name"] != "research-integrity":

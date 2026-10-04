@@ -18,7 +18,7 @@ AI research assistants rarely fail by inventing things from nothing. They fail b
 
 Each looks reasonable, and none announces itself.
 
-This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.12.
+This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.13.
 
 The skill you install is plain instructions. Beating a checklist is optional and off unless you ask. On Claude Code, the plugin also starts a local checker: it warns on a few overclaim phrases and can copy a number from a file in the project. It does not open a network connection. Claude Chat does not run it. This repository still runs [`scripts/gate.py`](scripts/gate.py), which recomputes the incident count from [`incidents.csv`](docs/case-study/incidents.csv) and fails if the skill or this page states a different one.
 
@@ -128,7 +128,7 @@ In-project AI review was the control that caught the most: separate sessions tol
 
 ![Figure 1 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
 
-- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.12. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what the skill added after the study window. The current skill release is 1.4.0.
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.13. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what the skill added after the study window. The current skill release is 1.4.1.
 - **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
 - **[See the evidence for each rule](docs/EVIDENCE.md)**.
 
