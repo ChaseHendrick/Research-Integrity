@@ -18,9 +18,9 @@ AI research assistants rarely fail by inventing things from nothing. They fail b
 
 Each looks reasonable, and none announces itself.
 
-This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.16.
+This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.17.
 
-The skill you install is plain instructions: no scripts, no network access, no API key. Beating a checklist is optional and off unless you ask. This repository asked: [`scripts/gate.py`](scripts/gate.py) recomputes the incident count from [`incidents.csv`](docs/case-study/incidents.csv) and fails if the skill or this page states a different one.
+The skill you install is plain instructions: no scripts, no hooks, no network access, no API key. Replacing a checklist with a program gate is optional and off unless you ask. This repository asked, so its own numbers are checked by programs: [`scripts/gate.py`](scripts/gate.py) fails if this page or the skill disagrees with [`incidents.csv`](docs/case-study/incidents.csv), and [`check_numbers.py`](docs/case-study/code/check_numbers.py) does the same for the case study, its figures and its PDF. Each first plants faults and must reject them.
 
 ## Install
 
@@ -31,11 +31,11 @@ The skill you install is plain instructions: no scripts, no network access, no A
 /plugin install research-integrity@research-integrity
 ```
 
-Restart the session if the skill does not appear. Claude loads it on its own when you do research work, or you can call it directly with `/research-integrity`.
+Restart the session if the skill does not appear. Claude loads it on its own when you do research work, or you can call it directly with `/research-integrity:research-integrity` (plugin skills are named `plugin:skill`).
 
 ### claude.ai and Cowork
 
-1. Download `research-integrity.zip` from the [latest release](https://github.com/ChaseHendrick/Research-Integrity/releases/latest).
+1. Download `research-integrity.zip` from the [latest release](https://github.com/ChaseHendrick/Research-Integrity/releases/latest). It holds `SKILL.md` and the license.
 2. In Claude, open **Settings → Capabilities → Skills** and upload the ZIP.
 3. Turn the skill on.
 
@@ -105,7 +105,7 @@ The same situation, in two columns. The right-hand column is what the skill is f
 5. **Review adversarially, then doubt the reviewer.** The drafting session never checks its own fixes.
 6. **Label review honestly.** An AI reading is not peer review.
 7. **Do not bend a gate to fit a release.**
-8. **Optional: beat a checklist.** Off unless you ask. When it is on, a program recomputes public counts and fails on a planted fault.
+8. **Optional: a program gate instead of a checklist.** Off unless you ask. When it is on, a program recomputes public counts and must fail on a planted fault before its pass means anything.
 
 The full text, with a pre-release checklist and a table of phrases to avoid, is in [`SKILL.md`](plugins/research-integrity/skills/research-integrity/SKILL.md). Rules 1–7 are always on. This repository opted into rule 8.
 
@@ -128,7 +128,7 @@ In-project AI review was the control that caught the most: separate sessions tol
 
 ![Figure 1 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
 
-- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.16. A second Claude model agreed on 74 of 80 class labels (κ = 0.905). That is not an outside review. The contribution sentence of version 1.5, which said no earlier record of this kind was known, is withdrawn in Section 1.1. Section 5.4 records what the skill added after the study window. The current skill release is 1.4.4.
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.17. A second Claude model agreed on 74 of 80 class labels (κ = 0.905); that is not an outside review. Section 1.1 compares earlier case studies and withdraws the claim, made in version 1.5, that no record of this kind was known. Section 5.4 records what the skill added after the study window.
 - **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
 - **[See the evidence for each rule](docs/EVIDENCE.md)**.
 
@@ -146,10 +146,18 @@ The skill is a single Markdown file of instructions. It runs no code, makes no n
 ## Development
 
 ```sh
-python3 scripts/validate.py
+python3 scripts/validate.py                    # marketplace, manifest, skill frontmatter
+python3 docs/case-study/code/check_numbers.py  # case study, figures and PDF against incidents.csv
+python3 scripts/gate.py                        # release gate; builds dist/research-integrity.zip
 ```
 
-This checks the marketplace file, the plugin manifest and the skill's frontmatter, recomputes the case-study counts, and runs the release gate. It runs on every push. With Claude Code installed you can also run `claude plugin validate . && claude plugin validate ./plugins/research-integrity --strict`.
+All three use only the Python standard library and run on every push. After changing the manuscript or `incidents.csv`, run `docs/case-study/code/make_figures.py` and then `build_pdf.py` (which needs `pip install fpdf2 markdown`), or `check_numbers.py` will report the stale files. With Claude Code installed you can also run `claude plugin validate . && claude plugin validate ./plugins/research-integrity --strict`.
+
+### Releasing
+
+1. Bump the version in `plugin.json`, `CITATION.cff` (with `date-released`), the skill's `Release:` line, and add a dated `CHANGELOG.md` heading. The gate fails until they agree.
+2. Merge to `main`, then push a tag: `git tag v1.5.0 && git push origin v1.5.0`.
+3. The [release workflow](.github/workflows/release.yml) runs the checks on the tagged commit, builds the zip there, publishes the release, downloads the published zip, and fails unless it is byte for byte the zip it built.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) to propose a rule, and [CHANGELOG.md](CHANGELOG.md) for versions.
 

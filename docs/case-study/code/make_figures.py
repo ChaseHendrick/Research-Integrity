@@ -5,6 +5,9 @@ Figures 1 and 2 are counted from incidents.csv.
 Control dates are the ones stated in the manuscript, not estimated.
 Figure 3 is not counted from the CSV. It redraws the five session totals
 already printed on that figure.
+
+render() returns the three SVG files as text without writing them, so that
+check_numbers.py can compare the committed figures with a fresh drawing.
 """
 import csv
 from collections import Counter, defaultdict
@@ -21,10 +24,13 @@ CLASS_ORDER = [
     ("P", "Process and tooling"),
 ]
 REACH_ORDER = ["public", "uncertain", "caught/internal"]
+# Checked as a set with the dataviz palette validator (light surface, all pairs):
+# lightness band, chroma floor, CVD separation >= 8, normal-vision separation >= 15,
+# and 3:1 contrast all pass. The previous set failed three of those five.
 REACH_COLOR = {
-    "public": "#8f3b2e",
-    "uncertain": "#9a7430",
-    "caught/internal": "#1c4c3e",
+    "public": "#c0412f",
+    "uncertain": "#c08417",
+    "caught/internal": "#0f8a6c",
 }
 INK = "#1c1916"
 MUTED = "#6f675e"
@@ -87,6 +93,14 @@ def detections():
     if extra:
         raise SystemExit(f"detector not in Table 2: {extra}")
     return [(label, counts[code], dark) for code, label, dark in order]
+
+
+def ai_review_count():
+    """Incidents caught by a referee session or the adversarial workflow, counted once."""
+    return sum(
+        1 for row in ROWS
+        if {"REF", "AVW"} & {p.strip() for p in row["detected_by"].split(",")}
+    )
 
 
 def figure_classes():
@@ -177,17 +191,21 @@ def figure_classes():
             )
         lines.append(text(x + 10, cy + 4, str(n), 12))
     note_y = plot_bottom + 32
+    reviewed = ai_review_count()
     lines.append(
         text(
             28,
             note_y,
-            "Filled marks: in-project AI review, 39 of 80 incidents (49%).",
+            f"Filled marks: in-project AI review, {reviewed} of {len(ROWS)} incidents "
+            f"({round(100 * reviewed / len(ROWS))}%).",
             11.5,
             MUTED,
         )
     )
     lines.append("</svg>")
-    (ROOT / "fig-classes.svg").write_text("\n".join(lines) + "\n")
+    # The height follows the last line of text, so no empty band sits under the note.
+    lines[0] = lines[0].replace(f"0 0 {width} {height}", f"0 0 {width} {fmt(note_y + 18)}")
+    return "\n".join(lines) + "\n"
 
 
 def figure_timeline():
@@ -200,17 +218,26 @@ def figure_timeline():
         "2026-09-24", "2026-09-25", "2026-09-26", "2026-09-27", "2026-09-28",
         "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-03",
     ]
-    # Stated in the manuscript. Not fitted.
-    controls = {
-        "2026-09-24": "gate",
-        "2026-09-25": "quality bar",
-        "2026-09-26": "adversarial",
-    }
-    width, height = 760, 430
-    unit = 6.4
-    col_w = 9
-    base = 328
-    left = 58
+    outside = [d for d in by if d not in days]
+    if outside:
+        raise SystemExit(f"dates outside the figure: {outside}")
+    undated = [row["id"] for row in ROWS if not row["date_recorded"]]
+    if len(undated) == 1:
+        note = f"One undated incident ({undated[0]}) is not shown."
+    else:
+        note = f"{len(undated)} undated incidents are not shown."
+    # Stated in the manuscript. Not fitted. Each line sits at the start of its day.
+    controls = [
+        ("2026-09-24", "uncertainty gate, 24 Sep"),
+        ("2026-09-25", "seven-item quality bar, 25 Sep"),
+        ("2026-09-26", "adversarial verification, 26 Sep"),
+    ]
+    width, height = 760, 404
+    unit = 10
+    col_w = 22
+    gap = 2
+    base = 320
+    left = 70
     pitch = 44
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
@@ -225,17 +252,8 @@ def figure_timeline():
         (280, "Caught / internal", REACH_COLOR["caught/internal"]),
     ]
     for x, name, color in legend:
-        lines.append(f'<rect x="{x}" y="38" width="8" height="8" fill="{color}"/>')
-        lines.append(text(x + 12, 46, name, 11.5, MUTED))
-    key = ["gate", "quality bar", "adversarial"]
-    kx = 430
-    for name in key:
-        lines.append(
-            f'<line x1="{kx}" y1="42" x2="{kx + 14}" y2="42" stroke="#163f35" '
-            f'stroke-width="1" stroke-dasharray="1.5 2"/>'
-        )
-        lines.append(text(kx + 18, 46, name, 11, MUTED))
-        kx += 110
+        lines.append(f'<rect x="{x}" y="38" width="9" height="9" fill="{color}"/>')
+        lines.append(text(x + 14, 46, name, 11.5, MUTED))
     for tick in (0, 5, 10, 15, 20):
         y = base - tick * unit
         lines.append(
@@ -243,44 +261,59 @@ def figure_timeline():
         )
         lines.append(text(40, y + 3, str(tick), 10, MUTED, anchor="end"))
     lines.append(f'<line x1="48" y1="{base}" x2="730" y2="{base}" stroke="{INK}" stroke-width="1"/>')
+
+    def centre(i):
+        return left + i * pitch
+
+    # Labels step down one line per control, and each line starts below the
+    # labels of the earlier controls, so no label crosses a line.
+    for k, (day, name) in enumerate(controls):
+        x = centre(days.index(day)) - pitch / 2
+        label_y = 72 + 14 * k
+        lines.append(
+            f'<line x1="{fmt(x)}" y1="{label_y - 10}" x2="{fmt(x)}" y2="{base}" stroke="{INK}" '
+            f'stroke-width="1" stroke-dasharray="2 3"/>'
+        )
+        lines.append(text(x + 5, label_y, name, 10.5, MUTED))
     for i, day in enumerate(days):
-        x = left + i * pitch
-        if day in controls:
-            mark = x - 8
-            lines.append(
-                f'<line x1="{mark}" y1="62" x2="{mark}" y2="{base}" stroke="#163f35" '
-                f'stroke-width="1" stroke-dasharray="1.5 2.5"/>'
-            )
+        cx = centre(i)
         y = base
         total = sum(by[day].values())
+        segments = []
         for reach in REACH_ORDER:
             n = by[day][reach]
             if not n:
                 continue
             h = n * unit
             y -= h
+            segments.append(y)
             lines.append(
-                f'<rect x="{fmt(x)}" y="{fmt(y)}" width="{col_w}" height="{fmt(h)}" '
+                f'<rect x="{fmt(cx - col_w / 2)}" y="{fmt(y)}" width="{col_w}" height="{fmt(h)}" '
                 f'fill="{REACH_COLOR[reach]}"/>'
             )
+        # A surface-coloured gap between stacked segments, drawn over the joins so
+        # that every segment keeps the height of its count.
+        for join in segments[:-1]:
+            lines.append(
+                f'<line x1="{fmt(cx - col_w / 2)}" y1="{fmt(join)}" x2="{fmt(cx + col_w / 2)}" '
+                f'y2="{fmt(join)}" stroke="{PAPER}" stroke-width="{gap}"/>'
+            )
         if total:
-            lines.append(text(x + col_w / 2, y - 6, str(total), 11, anchor="middle"))
-        lines.append(text(x + col_w / 2, base + 16, str(int(day[-2:])), 11, MUTED, anchor="middle"))
-    sep0 = left + col_w / 2
-    sep1 = left + 11 * pitch + col_w / 2
-    oct0 = left + 12 * pitch + col_w / 2
-    oct1 = left + 14 * pitch + col_w / 2
+            lines.append(text(cx, y - 6, str(total), 11, anchor="middle"))
+        lines.append(text(cx, base + 16, str(int(day[-2:])), 11, MUTED, anchor="middle"))
+    sep0, sep1 = centre(0), centre(11)
+    oct0, oct1 = centre(12), centre(14)
     lines.append(f'<line x1="{fmt(sep0)}" y1="{base + 28}" x2="{fmt(sep1)}" y2="{base + 28}" stroke="{RULE}"/>')
     lines.append(f'<line x1="{fmt(oct0)}" y1="{base + 28}" x2="{fmt(oct1)}" y2="{base + 28}" stroke="{RULE}"/>')
     lines.append(text((sep0 + sep1) / 2, base + 44, "September", 12, MUTED, anchor="middle"))
     lines.append(text((oct0 + oct1) / 2, base + 44, "October", 12, MUTED, anchor="middle"))
-    lines.append(text(380, base + 66, "Date recorded, 2026", 12, MUTED, anchor="middle"))
+    lines.append(text(389, base + 70, f"Date recorded, 2026. {note}", 11.5, MUTED, anchor="middle"))
     lines.append(
-        f'<text transform="translate(16,210) rotate(-90)" text-anchor="middle" fill="{MUTED}" '
-        f'font-size="12">Incidents</text>'
+        f'<text transform="translate(16,{base - 10 * unit}) rotate(-90)" text-anchor="middle" '
+        f'fill="{MUTED}" font-size="12">Incidents</text>'
     )
     lines.append("</svg>")
-    (ROOT / "fig-timeline.svg").write_text("\n".join(lines) + "\n")
+    return "\n".join(lines) + "\n"
 
 
 def figure_overhead():
@@ -325,11 +358,18 @@ def figure_overhead():
         )
     )
     lines.append("</svg>")
-    (ROOT / "fig-overhead.svg").write_text("\n".join(lines) + "\n")
+    return "\n".join(lines) + "\n"
+
+
+def render():
+    return {
+        "fig-classes.svg": figure_classes(),
+        "fig-timeline.svg": figure_timeline(),
+        "fig-overhead.svg": figure_overhead(),
+    }
 
 
 if __name__ == "__main__":
-    figure_classes()
-    figure_timeline()
-    figure_overhead()
+    for name, body in render().items():
+        (ROOT / name).write_text(body)
     print("wrote fig-classes.svg, fig-timeline.svg and fig-overhead.svg")

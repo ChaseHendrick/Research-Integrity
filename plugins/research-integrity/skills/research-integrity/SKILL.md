@@ -10,21 +10,21 @@ description: >
   passed. A cited theorem is applied only with its hypotheses checked. A public
   number is copied from the run that produced it. A check must be able to fail
   for the reason it tests. Reviews are adversarial and labelled as in-project.
-  A release gate that already exists is not relaxed to fit a release. Beating a
-  checklist with a program is optional, and only when someone asks for it.
+  A release gate that already exists is not relaxed to fit a release. Replacing
+  a checklist with a program gate is optional, and only when someone asks for it.
   Skip casual questions and code that makes no scientific or factual claim.
 license: Apache-2.0
 ---
 
 # Research integrity
 
-Release: 1.4.4
+Release: 1.5.0
 
 ## Goal
 
 Keep every claim inside its evidence. Rules 1–7 are the skill, and they are on every time it is used.
 
-Beating a checklist is optional. Apply section 8 only when the user asks for it, or when the project already has a release gate the user chose to keep. This repository asked for it: `scripts/gate.py`. A project that did not ask is not a failed release. Do not add a program they did not ask for, and do not talk them into turning it on.
+A program gate in place of a checklist is optional. Apply section 8 only when the user asks for it, or when the project already has a program gate the user chose to keep. A project that did not ask is not a failed release. Do not add a program they did not ask for, and do not talk them into turning it on.
 
 Not claimed. The skill does not open sources the assistant cannot reach. An in-project review is not peer review. Nothing here measures whether the rules reduce errors.
 
@@ -141,6 +141,12 @@ A check that cannot miss is not a check. For each verification:
   and confirm the check catches it. If most mutations pass, the check has no power.
 - **Match on exact success output.** A grep that matches both the success and
   the failure line, or a status printed regardless of the value, is not a check.
+- **Anchor a match to the claim.** Look for a value in the row or sentence that
+  states it. A search for `| 3 |` anywhere in a file also matches a cell of
+  another table, so it passes whatever the claimed row says.
+- **A control must exercise the code that decides.** A failure control that
+  raises its own error, or calls a helper instead of the comparison the real
+  run uses, shows only that the control ran.
 - **Bind results to the source that produced them**, so that a proof step
   cannot consume results computed from an older version. The certified block
   must be the block the proof uses.
@@ -201,11 +207,10 @@ A check that cannot miss is not a check. For each verification:
   passes. If a gate must change, record the change, the reason, and which release
   it unblocked. Make that change before the release, not in order to unblock it.
 - After release, download the archive and confirm it contains the manuscript,
-  the programs, and the data the notes name. A changelog heading is not evidence.
-  If the project has no program gate, do not invent one. If it has one, do not
-  edit it so this release passes. A green check on the branch is not the archive.
+  the programs, and the data the notes name. A changelog heading is not evidence,
+  and a green check on the branch is not the archive.
 
-## 8. Optional: beat a checklist
+## 8. Optional: a program gate instead of a checklist
 
 Off unless the user asks, or the project already has a gate they chose to keep. When it is off, skip this section. A checklist the user is willing to tick is allowed.
 
@@ -214,7 +219,7 @@ When it is on:
 - A committed program recomputes every public count from the file that produced it and exits non-zero if the prose disagrees.
 - The same program must reject a planted fault: a wrong count, or a version string that does not match. Record that the fault failed and that the clean tree passed. A program that has not been shown to fail is not a gate.
 - Do not change the program so this release passes. If the program is wrong, fix it first, and name the fault it previously missed.
-- The archive that is tagged is the archive that was checked. Build it from the same commit, then download the published file and compare it to that build.
+- The archive that is tagged is the archive that was checked. Build it from the same commit, reproducibly (fixed timestamps), then download the published file and compare it byte for byte with that build.
 
 ## Quality checklist (before any preprint or release)
 

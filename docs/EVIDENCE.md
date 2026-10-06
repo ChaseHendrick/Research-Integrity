@@ -36,7 +36,7 @@ Elsewhere:
 
 A verification figure of 6 × 10⁻²⁵ shipped in a release; it "came from a mislabeled metric … the true figure is 4.5 × 10⁻²¹" ([`RESEARCH.md:155`](https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/RESEARCH.md#L155)).
 
-**What changed.** "A check that cannot miss is not a check" ([`AGENTS.md:161`](https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/AGENTS.md#L161)). Every numerical record needs a failure control. Every verification claim in a paper maps to a committed check. Skill 1.1.0 adds three sentences that were not in force during the window: the control must fail for the reason under test (V7, V8); a public number is copied from a named field of the run, and the claimed domain is the proved domain (W1, W7, W8, W10); a check that was cut short, or that exists only in an uncommitted container, is not a pass (P6, P7, P8, P11).
+**What changed.** "A check that cannot miss is not a check" ([`AGENTS.md:161`](https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/AGENTS.md#L161)). Every numerical record needs a failure control. Every verification claim in a paper maps to a committed check. Skill 1.1.0 adds three sentences that were not in force during the window: the control must fail for the reason under test (V7, V8); a public number is copied from a named field of the run, and the claimed domain is the proved domain (W1, W7, W8, W10); a check that was cut short, or that exists only in an uncommitted container, is not a pass (P6, P7, P8, P11). Skill 1.5.0 adds two more, from defects in this repository's own checks, found on 6 October 2026 and described under rule 8 below: anchor a match to the row that states the claim, and make a failure control exercise the code that decides.
 
 ## 5. Review adversarially, then doubt the reviewer
 
@@ -56,11 +56,17 @@ A verification figure of 6 × 10⁻²⁵ shipped in a release; it "came from a m
 
 **What changed.** Every archive is now downloaded and checked after release. "A new `RELEASES.md` heading is not evidence" ([`docs/PUBLISHING-PAPERS.md:176`](https://github.com/ChaseHendrick/GENChase/blob/98e7fc4/docs/PUBLISHING-PAPERS.md#L176)).
 
-## 8. The gate is a program
+## 8. Optional: a program gate instead of a checklist
 
 **What happened.** The quality bar in GENChase was a checklist. A paper was archived while two items were still open, and the checker was then changed so an archived paper reported them instead of failing (case-study P1). A quality item was ticked before the reading it certified existed (V12). In this repository, case study version 1.8 stated 151 commits and a history starting on 22 September. `git rev-list --count` at the cited commit `98e7fc4`, run on 4 October 2026, is 315, and the first commit is dated 17 September. No program failed that sentence.
 
-**What changed.** Release 1.2.0 added the program gate. Release 1.3.0 makes it optional: off unless someone asks, or the project already has a gate they chose. Release 1.4.0 adds a local hook and a local server. They do not open a network connection. The hook blocks only when the project sets `"block": true`. This repository still runs [`scripts/gate.py`](../scripts/gate.py). A planted count of 79, and a planted version mismatch, must each make it fail. The optional rule was not a control during the study window.
+Then the programs themselves had holes. A review on 6 October 2026 found two checks in this repository that could not fail:
+- the gate's planted-count control raised its own error, so it never ran the comparison the real check used;
+- the case-study checker confirmed the Table 2 row for re-runs by finding `| 3 |` anywhere in the manuscript. A cell of Table 1 also matches that, and with the row changed to 4 the checker still printed OK.
+
+The PDF of the case study had also carried no figures, and nothing tied it to the manuscript it was built from.
+
+**What changed.** Release 1.2.0 added the program gate, and release 1.3.0 made it optional: off unless someone asks, or the project already has a gate they chose. Releases 1.4.0 to 1.4.3 shipped a local hook and server; 1.4.4 removed them, and the plugin is instructions only. Release 1.5.0 rebuilt this repository's checks. [`scripts/gate.py`](../scripts/gate.py) and [`check_numbers.py`](case-study/code/check_numbers.py) now write each planted fault into the real inputs, eight and seven of them, and the real check must reject each for its own reason before the clean run counts. The case-study checker compares each figure with a fresh drawing and fails if the PDF was built from other sources. The zip is reproducible, and the release workflow compares the published file with the build. The optional rule was not a control during the study window.
 
 ## The full record
 
