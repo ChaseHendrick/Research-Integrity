@@ -1,15 +1,26 @@
 name: Release
 
-# Push a tag vX.Y.Z on a commit that is on main. This workflow runs the checks on
-# that commit, builds the zip there, publishes it, then downloads the published
-# file and fails unless it is byte for byte the zip it built.
+# Either push a tag vX.Y.Z on a commit that is on main, or run this workflow by
+# hand on main with the version (Actions > Release > Run workflow), which creates
+# the tag on main's current commit. Either way it runs the checks on that commit,
+# builds the zip there, publishes it, then downloads the published file and fails
+# unless it is byte for byte the zip it built.
 
 on:
   push:
     tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, as in plugin.json (for example 1.5.0)"
+        required: true
+        type: string
 
 permissions:
   contents: write
+
+env:
+  TAG: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
 
 jobs:
   release:
@@ -22,14 +33,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: The tagged commit is on main
+      - name: The commit is on main
         run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+
+      - name: A run by hand does not reuse a tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          if git ls-remote --exit-code --tags origin "$TAG" > /dev/null; then
+            echo "tag $TAG already exists"
+            exit 1
+          fi
 
       - name: The tag is the release version
         run: |
           version=$(python3 -c "import json; print(json.load(open('plugins/research-integrity/.claude-plugin/plugin.json'))['version'])")
-          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
-            echo "tag $GITHUB_REF_NAME does not match plugin version $version"
+          if [ "v$version" != "$TAG" ]; then
+            echo "tag $TAG does not match plugin version $version"
             exit 1
           fi
 
@@ -40,7 +59,7 @@ jobs:
 
       - name: Release notes from the changelog
         run: |
-          python3 - "${GITHUB_REF_NAME#v}" > notes.md <<'PY'
+          python3 - "${TAG#v}" > notes.md <<'PY'
           import re, sys
           text = open("CHANGELOG.md").read()
           m = re.search(rf"^## {re.escape(sys.argv[1])} \(.*?\)\n(.*?)(?=^## |\Z)", text, re.M | re.S)
@@ -53,12 +72,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/research-integrity.zip \
-            --verify-tag --title "research-integrity ${GITHUB_REF_NAME#v}" --notes-file notes.md
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            where=(--target "$GITHUB_SHA")
+          else
+            where=(--verify-tag)
+          fi
+          gh release create "$TAG" dist/research-integrity.zip "${where[@]}" \
+            --title "research-integrity ${TAG#v}" --notes-file notes.md
 
       - name: The published zip is the zip that was checked
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release download "$GITHUB_REF_NAME" --pattern research-integrity.zip --dir downloaded
+          gh release download "$TAG" --pattern research-integrity.zip --dir downloaded
           python3 scripts/gate.py --compare downloaded/research-integrity.zip
