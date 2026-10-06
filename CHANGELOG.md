@@ -14,7 +14,7 @@ Checks in this repository:
 - `scripts/gate.py` builds a reproducible zip, now with the license. `--compare FILE` checks a downloaded release asset against it.
 - `docs/case-study/code/check_numbers.py`: it confirmed a Table 2 row by finding `| 3 |` anywhere in the manuscript, which a cell of Table 1 also matches, and it checked the figures for tokens such as `>1<` that any axis contains. It now checks Tables 1 and 2 row by row, the abstract counts, rates, κ and all 80 rows of Appendix A; compares each figure with a fresh drawing; and fails if the PDF was built from other sources. Seven planted faults must each be rejected first.
 - Removed `scripts/checks/check_write.py` and `scripts/checks/server.py`. Nothing ran them after 1.4.4, and the server still reported version 1.4.1. `phrases.py` stays and the gate uses it.
-- A release workflow publishes a tag's release from the zip built on that commit, then downloads it and compares.
+- A release workflow publishes a release from the zip built on the released commit (a pushed tag, or a run by hand on main that creates the tag), then downloads it and compares.
 
 Case study v1.17:
 - Section 4.4 named three of the five public incidents in class V. V18 and V19 are now named.

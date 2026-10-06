@@ -156,8 +156,8 @@ All three use only the Python standard library and run on every push. After chan
 ### Releasing
 
 1. Bump the version in `plugin.json`, `CITATION.cff` (with `date-released`), the skill's `Release:` line, and add a dated `CHANGELOG.md` heading. The gate fails until they agree.
-2. Merge to `main`, then push a tag: `git tag v1.5.0 && git push origin v1.5.0`.
-3. The [release workflow](.github/workflows/release.yml) runs the checks on the tagged commit, builds the zip there, publishes the release, downloads the published zip, and fails unless it is byte for byte the zip it built.
+2. Merge to `main`, then push a tag (`git tag v1.5.0 && git push origin v1.5.0`), or open **Actions → Release → Run workflow** on `main` and enter the version, which tags main's current commit.
+3. The [release workflow](.github/workflows/release.yml) runs the checks on that commit, builds the zip there, publishes the release, downloads the published zip, and fails unless it is byte for byte the zip it built.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) to propose a rule, and [CHANGELOG.md](CHANGELOG.md) for versions.
 
