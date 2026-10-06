@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+The skill is unchanged, so this is not a plugin release.
+
+- Case study v1.18: Section 4.1 names N4, the last public incident that was not named in its class's section. It is the same kind of gap as V18 and V19 in v1.17.
+- `check_numbers.py` now fails if a public incident is left out of its class's section, if Section 5.3 does not list every public incident dated after 25 September, or if Table B1 is not the differences between the Figure 3 totals. Ten planted faults are rejected first, up from seven.
+- `CITATION.cff` names the case-study version, and the gate fails if it differs from the manuscript.
+- `docs/case-study/code/requirements.txt` pins the two packages `build_pdf.py` needs, so that a rebuild gives the same PDF.
+
 ## 1.5.0 (2026-10-06)
 
 A review of the 1.2.0–1.4.4 work, which was drafted with Grok, found that two of this repository's own checks could not fail, and that the skill told every project it was installed in that `scripts/gate.py` existed there.
@@ -73,6 +82,8 @@ Also in this tag (listed as Unreleased until 1.5.0):
 - Added the case study *Eighty Failures* (Markdown and PDF), its two figures and the 80-incident dataset under [docs/case-study/](docs/case-study/), and linked them from the README and the evidence page.
 
 ## 1.1.0 (2026-10-04)
+
+Not tagged and not released on its own. Its changes first shipped in the v1.2.0 tag.
 
 - The skill now requires a status on every claim (`proved`, `computer-assisted`, `cited`, `numerical`, `conjectured`), a hypothesis check before a cited theorem is applied, and a named source field for every public number.
 - A check's failure control must fail for the reason under test. A cut-short search, check, or review is not a pass.

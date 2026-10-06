@@ -5,7 +5,7 @@ Fails (exit 1) if any of these does not hold:
   - The incident count in the skill and the README is the row count of
     incidents.csv, and the README's class table, AI-review share and
     agreement figures are what that file gives.
-  - The README names the case-study version the manuscript carries.
+  - The README and CITATION.cff name the case-study version the manuscript carries.
   - The release version agrees across the plugin manifest, the citation file,
     the skill's Release line and the changelog, and the citation date is the
     changelog date. The skill release the case study names has a changelog
@@ -129,6 +129,9 @@ def check(root):
         named = one(r"\(\[PDF\]\(docs/case-study/ai-research-failure-modes\.pdf\)\), version (\d+\.\d+)", readme, "README case-study version")
         if named != case_version:
             errors.append(f"README names case study {named}; the manuscript is {case_version}")
+        cited = one(r'^    version: "(\d+\.\d+)"\s*$', read("CITATION.cff"), "CITATION.cff case-study reference")
+        if cited != case_version:
+            errors.append(f"CITATION.cff cites case study {cited}; the manuscript is {case_version}")
     except GateError as exc:
         errors.append(str(exc))
 
@@ -218,6 +221,7 @@ def planted_faults():
         ("README class V public 5 -> 4", "README.md", "| 20 | 5 |", "| 20 | 4 |", "README class table, class V"),
         ("citation version 0.0.1", "CITATION.cff", "\nversion: ", "\nversion: 0.0.1\nold-version: ", "version mismatch"),
         ("README case study 1.0", "README.md", "ai-research-failure-modes.pdf)), version ", "ai-research-failure-modes.pdf)), version 1.0 ", "values disagree"),
+        ("citation cites case study 1.0", "CITATION.cff", '    version: "', '    version: "1.0"\n    old: "', "CITATION.cff cites case study 1.0"),
         ("priority wording in README", "README.md", "## Install", "This is the first skill of its kind.\n\n## Install", "'this is the first' on lines"),
         ("hook in plugin", f"{PLUGIN}/hooks/hooks.json", None, "{}", "plugin ships hooks/hooks.json"),
     ]

@@ -17,6 +17,7 @@ references:
       - family-names: Hendrick
         given-names: Chase
     year: 2026
+    version: "1.18"
     url: "https://github.com/ChaseHendrick/Research-Integrity/blob/main/docs/case-study/ai-research-failure-modes.md"
 keywords:
   - research integrity

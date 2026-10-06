@@ -6,14 +6,17 @@ Recomputes from incidents.csv, and fails if the manuscript states otherwise:
   - Table 2, row by row, and its order;
   - the AI-review share, the owner count and the rates;
   - Cohen's kappa, the chance term and the six disagreements;
-  - every row of Appendix A.
+  - every row of Appendix A;
+  - every public incident is named in its class's section of Section 4;
+  - Section 5.3 lists every public incident dated after 25 September;
+  - Table B1 is the differences between the Figure 3 totals.
 Redraws the three figures in memory and fails if a committed SVG differs.
 Fails if the committed PDF was built from a different manuscript or figures.
 
 Every match is anchored to the row or sentence that makes the claim. A bare
 "| 3 |" also matches a cell of another table, so it cannot fail.
 
-Failure control: before the real check runs, seven planted faults must each
+Failure control: before the real check runs, ten planted faults must each
 be rejected for their own reason, and the clean inputs must pass. If not, this
 program exits 1. A check that has not been shown to fail is not a check.
 
@@ -88,6 +91,29 @@ def kappa(rows):
     chance = sum(c1[k] * c2[k] for k in set(c1) | set(c2))
     pe = chance / (n * n)
     return agree, chance, (agree / n - pe) / (1 - pe)
+
+
+def incident_ids(passage):
+    """Incident identifiers named in a passage. A range such as V15–V19 names each one."""
+    named = set()
+    for m in re.finditer(r"\b([NLWVP])(\d+)(?:–\1?(\d+))?\b", passage):
+        first, last = int(m.group(2)), int(m.group(3) or m.group(2))
+        named |= {f"{m.group(1)}{i}" for i in range(first, last + 1)}
+    return named
+
+
+def class_sections(text):
+    """Section 4 subsections, keyed by class letter."""
+    sections = {}
+    for m in re.finditer(r"^### 4\.\d Class ([NLWVP]):(.*?)(?=^### |^## )", text, re.M | re.S):
+        sections[m.group(1)] = m.group(2)
+    return sections
+
+
+def sentence_at(text, start):
+    """The sentence that begins with `start`, or an empty string."""
+    i = text.find(start)
+    return "" if i < 0 else text[i:].split(". ", 1)[0]
 
 
 def table_rows(text, header):
@@ -181,6 +207,39 @@ def check(text, rows, committed_svgs, drawn_svgs, pdf_bytes):
     if disagreements != 6:
         errors.append(f"the manuscript says six disagreements; the data has {disagreements}")
 
+    # Public incidents in their class sections, and the dates in Section 5.3.
+    sections = class_sections(text)
+    for r in rows:
+        if r["reach"] == "public" and r["id"] not in incident_ids(sections.get(r["class"], "")):
+            errors.append(f"public incident {r['id']} is not named in the Section 4 section for class {r['class']}")
+    late = {r["id"] for r in rows if r["reach"] == "public" and r["date_recorded"] > "2026-09-25"}
+    on_27 = {r["id"] for r in rows if r["reach"] == "public" and r["date_recorded"] == "2026-09-27"}
+    named_27 = incident_ids(sentence_at(text, "N4, L10 and L11 are the three public incidents dated 27 September"))
+    if named_27 != on_27 or len(on_27) != 3:
+        errors.append(f"Section 5.3: public incidents dated 27 September are {sorted(on_27)}, text names {sorted(named_27)}")
+    named_late = incident_ids(sentence_at(text, "The public incidents dated after 25 September are those three")) | named_27
+    if named_late != late:
+        errors.append(f"Section 5.3: public incidents dated after 25 September are {sorted(late)}, text names {sorted(named_late)}")
+
+    # Table B1: each component is a difference between two Figure 3 totals.
+    totals = dict(make_figures.OVERHEAD)
+    full, no_mcp, no_skills = totals["Full setup"], totals["No MCP servers"], totals["Also no skills"]
+    bare, no_tools = totals["Also no user plugins/settings (bare)"], totals["Bare, no tools"]
+    components = {
+        "Built-in tool definitions": bare - no_tools,
+        "MCP servers / connectors": full - no_mcp,
+        "Plugin configuration": no_skills - bare,
+        "System prompt and message": no_tools,
+        "Skills listing": no_mcp - no_skills,
+    }
+    table_b1 = dict(table_rows(text, "| Component | Tokens per fresh session |"))
+    for label, value in components.items():
+        want = f"~{round(value, -2):,}"
+        if table_b1.get(label) != want:
+            errors.append(f"Table B1 row {label!r}: manuscript {table_b1.get(label)}, Figure 3 gives {want}")
+    if table_b1.get("**Total, full setup**") != f"**~{full:,}**":
+        errors.append(f"Table B1 total: manuscript {table_b1.get('**Total, full setup**')}, Figure 3 gives ~{full:,}")
+
     # Appendix A.
     for r in rows:
         line = f"| {r['id']} | {r['incident']} | {r['detected_by']} | {REACH_CODE[r['reach']]} |"
@@ -240,6 +299,9 @@ def failure_controls(text, rows, committed, drawn, pdf):
         ("CSV W18 reach public -> uncertain", text, [dict(r, reach="uncertain") if r is w18 else r for r in rows], committed, "Appendix A row W18"),
         ("one byte of a figure", text, rows, dict(committed, **{"fig-timeline.svg": svg.replace(">20<", ">21<", 1)}), "fig-timeline.svg differs"),
         ("PDF from an older manuscript", plant("## Abstract", "## Abstract "), rows, committed, "PDF was not built"),
+        ("V18 left out of Section 4.4", plant("featureless (V18)", "featureless"), rows, committed, "public incident V18 is not named"),
+        ("P3 left out of Section 5.3", plant("P1, P2, P3 and P14", "P1, P2 and P14"), rows, committed, "dated after 25 September"),
+        ("Table B1 plugin row 5,500 -> 5,600", plant("| Plugin configuration | ~5,500 |", "| Plugin configuration | ~5,600 |"), rows, committed, "Table B1 row"),
     ]
     for name, planted_text, planted_rows, planted_svgs, reason in faults:
         errors = check(planted_text, planted_rows, planted_svgs, drawn, pdf)
