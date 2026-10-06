@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Build ai-research-failure-modes.pdf from the Markdown manuscript and its SVG figures.
 
-Uses fpdf2 and markdown (pure Python) and the Liberation Serif fonts.
+Uses fpdf2 and markdown (pure Python, pinned in requirements.txt) and the
+Liberation Serif fonts.
 The PDF's Keywords field carries the sha256 of the manuscript and figures it
 was built from, so check_numbers.py can tell when the committed PDF is stale.
 The creation date is the manuscript's own date, so a rebuild of the same
 sources on the same versions of fpdf2 and the fonts gives the same file.
 """
+import logging
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,6 +17,9 @@ import markdown
 from fpdf import FPDF
 
 from digest import TAG, source_digest
+
+# fpdf2 does not draw an SVG <title>. The figures keep it for screen readers.
+logging.getLogger("fpdf.svg").setLevel(logging.ERROR)
 
 ROOT = Path(__file__).resolve().parent.parent
 FONT_DIR = Path("/usr/share/fonts/truetype/liberation")

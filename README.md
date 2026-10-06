@@ -18,7 +18,7 @@ AI research assistants rarely fail by inventing things from nothing. They fail b
 
 Each looks reasonable, and none announces itself.
 
-This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.17.
+This skill makes Claude show its evidence at every step: how each claim is known, what each search could and could not reach, and whether each check could have failed. It encodes the controls that caught **80 documented failures** in two weeks of AI-assisted mathematical research across nine preprints. These are documented in the case study [*Eighty Failures*](docs/case-study/ai-research-failure-modes.md) ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.18.
 
 The skill you install is plain instructions: no scripts, no hooks, no network access, no API key. Replacing a checklist with a program gate is optional and off unless you ask. This repository asked, so its own numbers are checked by programs: [`scripts/gate.py`](scripts/gate.py) fails if this page or the skill disagrees with [`incidents.csv`](docs/case-study/incidents.csv), and [`check_numbers.py`](docs/case-study/code/check_numbers.py) does the same for the case study, its figures and its PDF. Each first plants faults and must reject them.
 
@@ -128,7 +128,7 @@ In-project AI review was the control that caught the most: separate sessions tol
 
 ![Figure 1 from the case study: incidents by class and reach, and which controls caught them](docs/case-study/fig-classes.svg)
 
-- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.17. A second Claude model agreed on 74 of 80 class labels (κ = 0.905); that is not an outside review. Section 1.1 compares earlier case studies and withdraws the claim, made in version 1.5, that no record of this kind was known. Section 5.4 records what the skill added after the study window.
+- **[Read the case study](docs/case-study/ai-research-failure-modes.md)** ([PDF](docs/case-study/ai-research-failure-modes.pdf)), version 1.18. A second Claude model agreed on 74 of 80 class labels (κ = 0.905); that is not an outside review. Section 1.1 compares earlier case studies and withdraws the claim, made in version 1.5, that no record of this kind was known. Section 5.4 records what the skill added after the study window.
 - **[Download the incident dataset](docs/case-study/incidents.csv)**: 80 rows, each with class, date, verbatim evidence, detecting control and reach.
 - **[See the evidence for each rule](docs/EVIDENCE.md)**.
 
@@ -151,7 +151,7 @@ python3 docs/case-study/code/check_numbers.py  # case study, figures and PDF aga
 python3 scripts/gate.py                        # release gate; builds dist/research-integrity.zip
 ```
 
-All three use only the Python standard library and run on every push. After changing the manuscript or `incidents.csv`, run `docs/case-study/code/make_figures.py` and then `build_pdf.py` (which needs `pip install fpdf2 markdown`), or `check_numbers.py` will report the stale files. With Claude Code installed you can also run `claude plugin validate . && claude plugin validate ./plugins/research-integrity --strict`.
+All three use only the Python standard library and run on every push. After changing the manuscript or `incidents.csv`, run `docs/case-study/code/make_figures.py` and then `build_pdf.py` (which needs `pip install -r docs/case-study/code/requirements.txt`), or `check_numbers.py` will report the stale files. With Claude Code installed you can also run `claude plugin validate . && claude plugin validate ./plugins/research-integrity --strict`.
 
 ### Releasing
 

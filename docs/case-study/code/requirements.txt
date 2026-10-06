@@ -1,0 +1,4 @@
+# For build_pdf.py only. The checks use the standard library.
+# Pinned so that a rebuild of the same sources gives the same PDF.
+fpdf2==2.8.9
+markdown==3.11
