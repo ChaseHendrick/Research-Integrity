@@ -16,8 +16,6 @@ jobs:
         with:
           python-version: "3.12"
       - run: python3 scripts/validate.py
+      - run: python3 scripts/checks/phrases.py --self-test
       - run: python3 docs/case-study/code/check_numbers.py
       - run: python3 scripts/gate.py
-      - run: python3 scripts/checks/phrases.py --self-test
-      - run: python3 scripts/checks/check_write.py --self-test
-      - run: python3 scripts/checks/server.py --self-test

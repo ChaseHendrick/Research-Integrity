@@ -85,7 +85,7 @@ In the real case, the result was in both of those papers.
 
 ## A gate
 
-This example is only for a project that asked to beat a checklist. If nobody asked, do not write the program.
+This example is only for a project that asked for a program gate instead of a checklist. If nobody asked, do not write the program.
 
 **Before**
 
@@ -93,4 +93,4 @@ This example is only for a project that asked to beat a checklist. If nobody ask
 
 **After**
 
-> `scripts/gate.py` reads `incidents.csv` and exits 1 if the skill states a different count. Planted fault: the sentence "79 failures" against a file of 80 rows. Observed: fail, because the stated count is 79. The clean tree exits 0. The zip is built in that same run. The release waits until the downloaded archive matches that zip. Status of the count: `repository`. Not claimed: the gate does not check a proof.
+> `scripts/gate.py` reads `incidents.csv` and exits 1 if the skill or the README states a different count. Failure control: the gate writes "79 documented failures" into a copy of the README and runs the same check the release runs. Observed: fail, with "README.md states 79 failures; incidents.csv has 80". The clean copy exits 0. A control that raised its own error would show only that the control ran. The zip is built reproducibly in that same run, and the release waits until the downloaded archive is byte for byte that zip. Status of the count: `repository`. Not claimed: the gate does not check a proof.

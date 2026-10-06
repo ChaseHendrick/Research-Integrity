@@ -1,9 +1,67 @@
 # Changelog
 
-## Unreleased
+## 1.5.0 (2026-10-06)
 
-- Figures redrawn. Incidents by class are a dot strip, detections and session overhead are lollipops, and the timeline columns are narrow. Counts unchanged.
+A review of the 1.2.0–1.4.4 work, which was drafted with Grok, found that two of this repository's own checks could not fail, and that the skill told every project it was installed in that `scripts/gate.py` existed there.
+
+Skill:
+- Removed the sentence "This repository asked for it: `scripts/gate.py`" from the shipped skill. In a user's project it pointed at a program that is not there.
+- Section 8 is renamed "a program gate instead of a checklist". The rule is unchanged and still off unless asked for.
+- Rule 4 gains two sentences: anchor a match to the row or sentence that states the claim, and make a failure control exercise the code that decides. Section 8 asks for a reproducible build, so a downloaded archive can be compared byte for byte.
+
+Checks in this repository:
+- `scripts/gate.py`: its planted-count control raised its own error and never ran the comparison the real check used. Each control now writes its fault into a copy of the tree, and the real check must reject it for its own reason. The gate now also checks the README's class table, AI-review share and agreement figures against `incidents.csv`, the README's case-study version, the citation date against the changelog, and the shipped prose for overclaim phrases beyond the listed quotations.
+- `scripts/gate.py` builds a reproducible zip, now with the license. `--compare FILE` checks a downloaded release asset against it.
+- `docs/case-study/code/check_numbers.py`: it confirmed a Table 2 row by finding `| 3 |` anywhere in the manuscript, which a cell of Table 1 also matches, and it checked the figures for tokens such as `>1<` that any axis contains. It now checks Tables 1 and 2 row by row, the abstract counts, rates, κ and all 80 rows of Appendix A; compares each figure with a fresh drawing; and fails if the PDF was built from other sources. Seven planted faults must each be rejected first.
+- Removed `scripts/checks/check_write.py` and `scripts/checks/server.py`. Nothing ran them after 1.4.4, and the server still reported version 1.4.1. `phrases.py` stays and the gate uses it.
+- A release workflow publishes a tag's release from the zip built on that commit, then downloads it and compares.
+
+Case study v1.17:
+- Section 4.4 named three of the five public incidents in class V. V18 and V19 are now named.
+- Section 5.4 states the 1.4.x releases in one sentence and records the two defects above. The manuscript names the skill release it describes rather than "the current" one, so a plugin release no longer forces a manuscript revision.
+- The PDF shows the figures instead of naming them, and carries a digest of the files it was built from.
+- Figures: the reach colors are re-stepped to pass a colorblind-safety check the old set failed; the timeline has wider columns and labels each control line directly. Counts unchanged.
+- `README.md` names the plugin skill as `/research-integrity:research-integrity`.
+
+## 1.4.4 (2026-10-04)
+
+- The plugin ships no hook and no server. The directory follows a command only when the script has no variables and opens no path, which a checker cannot do. The phrase checks remain in `scripts/checks/` for this repository. They are not part of the plugin.
+- Case study v1.16 records this release.
+
+## 1.4.3 (2026-10-04)
+
+- The hook and the server are the shell scripts themselves. They start no other program, so there is no second file for the directory to refuse to follow. The server only reports phrases. It does not open a file.
+- Case study v1.15 records this release.
+
+## 1.4.2 (2026-10-04)
+
+- The hook and server scripts no longer compute a path. Each command is `${CLAUDE_PLUGIN_ROOT}` plus a fixed script name. An error string that said "pass row" is gone, and so is the author profile URL. The Python files those scripts start are still one level down, which the directory says a reviewer reads.
+- Case study v1.14 records this release.
+
+## 1.4.1 (2026-10-04)
+
+- Directory validation. The hook and the server are started from shell scripts under the plugin path. Neither reads the process environment. A square PNG icon is at `.claude-plugin/icon.png`. The Python files those scripts start may still be held for a person to read.
+- Case study v1.13 records this release.
+
+## 1.4.0 (2026-10-04)
+
+- A local MCP server and a Write/Edit hook, both stdlib Python, no network. The hook warns by default and blocks only when the project sets `"block": true`. Claude Chat does not run either.
+- Case study v1.12 records this release.
+
+## 1.3.0 (2026-10-04)
+
 - Plugin listing fields for the Claude directory: `displayName`, and a README in the plugin folder that states the skill sends nothing and fetches nothing.
+- Beating a checklist is optional. Rules 1–7 stay on. Section 8 applies only when someone asks, or when the project already has a gate they chose. This repository still runs `scripts/gate.py`.
+- Case study v1.11 records that choice.
+
+## 1.2.0 (2026-10-04)
+
+- Goal: beat a checklist. A release gate is a committed program that recomputes public counts and fails on a planted fault, not a box the drafting session can tick.
+- Rule 8 in the skill. A public error is dated by the artifact that shipped. A contribution sentence says what it does not claim and how far the sources were read.
+- `scripts/gate.py` holds this repository to that rule and builds `research-integrity.zip`.
+
+Also in this tag (listed as Unreleased until 1.5.0):
+
 - Case study v1.10: the manuscript names skill release 1.2.0, and says rule 8 was not a control during the study window.
 - Case study v1.9: the commit counts now match `98e7fc4`. The history has 315 commits from 17 September, not a root on 22 September and not 151 commits. The 55 Zenodo DOIs are the distinct identifiers in `papers/papers.json`. `docs/EVIDENCE.md` records the skill 1.1.0 sentences that were not controls during the window.
 - Case study v1.8: Section 5.2 is the protocol on 3 October. Skill 1.1.0, committed the next day, is recorded separately in Section 5.4 and is not treated as having been in force during the window.
@@ -13,37 +71,6 @@
 - Case study v1.4: connectors that silently fail to load as another source of false "nothing found" results.
 - Case study v1.3: a new discussion section on the cost of the controls (measured session overhead and how usage limits cut verification short), links to the issues filed from it, and consistency fixes.
 - Added the case study *Eighty Failures* (Markdown and PDF), its two figures and the 80-incident dataset under [docs/case-study/](docs/case-study/), and linked them from the README and the evidence page.
-
-## 1.4.4 (2026-10-04)
-
-- The plugin ships no hook and no server. The directory follows a command only when the script has no variables and opens no path, which a checker cannot do. The phrase checks remain in `scripts/checks/` for this repository. They are not part of the plugin.
-
-## 1.4.3 (2026-10-04)
-
-- The hook and the server are the shell scripts themselves. They start no other program, so there is no second file for the directory to refuse to follow. The server only reports phrases. It does not open a file.
-
-## 1.4.2 (2026-10-04)
-
-- The hook and server scripts no longer compute a path. Each command is `${CLAUDE_PLUGIN_ROOT}` plus a fixed script name. An error string that said "pass row" is gone, and so is the author profile URL. The Python files those scripts start are still one level down, which the directory says a reviewer reads.
-
-## 1.4.1 (2026-10-04)
-
-- Directory validation. The hook and the server are started from shell scripts under the plugin path. Neither reads the process environment. A square PNG icon is at `.claude-plugin/icon.png`. The Python files those scripts start may still be held for a person to read.
-
-## 1.4.0 (2026-10-04)
-
-- A local MCP server and a Write/Edit hook, both stdlib Python, no network. The hook warns by default and blocks only when the project sets `"block": true`. Claude Chat does not run either.
-
-## 1.3.0 (2026-10-04)
-
-- Beating a checklist is optional. Rules 1–7 stay on. Section 8 applies only when someone asks, or when the project already has a gate they chose. This repository still runs `scripts/gate.py`.
-- Case study v1.11 records that choice.
-
-## 1.2.0 (2026-10-04)
-
-- Goal: beat a checklist. A release gate is a committed program that recomputes public counts and fails on a planted fault, not a box the drafting session can tick.
-- Rule 8 in the skill. A public error is dated by the artifact that shipped. A contribution sentence says what it does not claim and how far the sources were read.
-- `scripts/gate.py` holds this repository to that rule and builds `research-integrity.zip`.
 
 ## 1.1.0 (2026-10-04)
 

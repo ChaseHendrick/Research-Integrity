@@ -17,7 +17,9 @@ Rules without a real failure behind them are unlikely to be added. The skill sta
 - Keep `SKILL.md` short and concrete. Prefer one clear instruction over a paragraph of advice.
 - Keep the frontmatter `description` under 1024 characters. It decides when Claude loads the skill.
 - Run `python3 scripts/validate.py`, `python3 docs/case-study/code/check_numbers.py`, and `python3 scripts/gate.py` before opening a pull request. CI runs them too.
-- Add a line to `CHANGELOG.md`, and bump `version` in `plugins/research-integrity/.claude-plugin/plugin.json`.
+- A new check needs a failure control: a fault written into the real inputs that the check must reject, for its own reason. Add it to the program's list of planted faults.
+- If you change the manuscript or `incidents.csv`, run `docs/case-study/code/make_figures.py` and `build_pdf.py`. `check_numbers.py` fails on stale figures or a stale PDF.
+- For a release, bump the version in `plugin.json`, `CITATION.cff` and the skill's `Release:` line, and add a dated `CHANGELOG.md` heading. The README's [Releasing](README.md#releasing) section has the rest.
 
 ## Reporting a problem
 
